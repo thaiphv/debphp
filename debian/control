@@ -1,0 +1,37 @@
+Source: php-f8r-app
+Section: php
+Maintainer: Jedi <jedi@freelancer.com>
+Priority: optional
+Build-Depends: debhelper (>= 8),
+               build-essential,
+               autoconf2.59,
+               libstdc++6-4.6-dev,
+               g++-4.6,
+               libxml2-dev,
+               libbz2-dev,
+               libcurl4-openssl-dev,
+               libfreetype6-dev,
+               libpng-dev,
+               libt1-dev,
+               libicu-dev,
+               libmcrypt-dev,
+               libreadline-dev,
+               libpcre3-dev,
+               g++,
+               libmagick++-dev,
+               libssl-dev,
+               libncurses5-dev,
+               re2c
+Standards-Version: 5.3.27
+
+Package: php-f8r-app
+Architecture: amd64
+Depends: lsb-base (>= 3.2-14), mime-support, libmagic1, ucf, tzdata, sed, libmcrypt4, libicu48, libmagickwand4, libt1-5 
+Provides: ${php:Provides}
+Conflicts: php5-json,
+           php5-mhash,
+           php5-common,
+           php5,
+           php5-fpm
+Description: Freelancer php for app servers
+ PHP for app servers

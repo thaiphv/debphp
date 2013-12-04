@@ -1,0 +1,11 @@
+php-f8r-app (5.3.27-1) stable; urgency=high
+
+  * php for app server with php version 5.3.27
+
+ -- jedi <jedi@freelancer.com>  Tue, 6 Oct 2013 16:36:59 +1000
+
+php-f8r-app (5.3.25-1) stable; urgency=high
+
+  * php for app server with php version 5.3.25 
+
+ -- jedi <jedi@freelancer.com>  Tue, 14 May 2013 15:38:59 +1000

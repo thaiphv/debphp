@@ -1,0 +1,69 @@
+#!/usr/bin/make -f
+
+export LDFLAGS=-lstdc++
+
+
+%:
+	dh $@
+
+override_dh_auto_test:
+	# 
+
+override_dh_auto_configure:
+	cd $(CURDIR)/dependency/pcre/
+	make distclean
+	./configure --enable-static --enable-jit
+	make
+	ln -s .libs/libpcre.a libpcre.a
+	cd $(CURDIR)
+	#Put your own configure commmands here
+	#Add config path to the configuration parameters
+	$(CURDIR)/configure \
+	--prefix=/usr/ \
+	--bindir=/usr/bin/ \
+	--sbindir=/usr/sbin/ \
+	--localstatedir=/var \
+	--libexecdir=/usr/lib/php5/libexec \
+	--sysconfdir=/etc/php5/fpm/ \
+	--mandir=/usr/share/man \
+	--enable-static \
+	--with-config-file-path=/etc/php5/fpm/ \
+	--with-config-file-scan-dir=/etc/php5/conf.d/ \
+	--enable-cli --enable-cgi --enable-fpm \
+	--with-fpm-user=www-data --with-fpm-group=www-data \
+	--enable-magic-quotes --disable-ipv6 --without-sqlite3 \
+	--without-sqlite --disable-sqlite --with-zlib \
+	--enable-bcmath --with-bz2 --enable-calendar \
+	--with-curl --disable-dba --enable-exif \
+	--enable-ftp --with-gd --with-t1lib --with-jpeg-dir=/usr \
+	--enable-gd-native-ttf --with-gettext --with-mhash \
+	--enable-mbstring --enable-intl --with-libmbfl --with-onig \
+	--with-mcrypt --with-mysql=mysqlnd --with-mysqli=mysqlnd \
+	--with-ncurses  --with-openssl --disable-phar --enable-pcntl \
+	--with-pdo-mysql=mysqlnd --without-pdo-sqlite  --with-readline \
+	--enable-shmop --enable-soap --enable-sockets --enable-sysvmsg \
+	--enable-sysvsem --enable-sysvshm --enable-wddx --with-xmlrpc \
+	--enable-zip --with-pear=/usr/share/pear --with-zend-vm --enable-apc \
+	--with-imagick --enable-memcache --enable-proctitle \
+	--with-pcre-regex=$(CURDIR)/dependency/pcre/
+
+override_dh_auto_build:
+	sed -i '/^BUILD_/ s/CC/CXX/g' $(CURDIR)/Makefile
+	$(MAKE)
+	#DON'T need this which will be done by dh_strip automatically
+	#strip $(CURDIR)/sapi/fpm/php-fpm
+
+override_dh_auto_install:
+	#$(MAKE) install DESTDIR=$(CURDIR)/debian/php-f8r-app
+	$(MAKE) install INSTALL_ROOT=$(CURDIR)/debian/php-f8r-app
+	#Copy the configuration initial files
+	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php.ini
+	cp -v $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
+
+override_dh_installinit:
+	dh_installinit --name=php-fpm
+
+clean:
+	dh $@
+	#
+
