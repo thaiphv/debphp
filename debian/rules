@@ -16,6 +16,8 @@ override_dh_auto_configure:
 	make
 	ln -s .libs/libpcre.a libpcre.a
 	cd $(CURDIR)
+	rm configure
+	PHP_AUTOCONF=autoconf2.59 ./buildconf --force
 	#Put your own configure commmands here
 	#Add config path to the configuration parameters
 	$(CURDIR)/configure \
@@ -48,8 +50,8 @@ override_dh_auto_configure:
 	--with-pcre-regex=$(CURDIR)/dependency/pcre/
 
 override_dh_auto_build:
-	sed -i '/^BUILD_/ s/CC/CXX/g' $(CURDIR)/Makefile
-	$(MAKE)
+	#sed -i '/^BUILD_/ s/CC/CXX/g' $(CURDIR)/Makefile
+	LDFLAGS='-lstdc++' make -j 2
 	#DON'T need this which will be done by dh_strip automatically
 	#strip $(CURDIR)/sapi/fpm/php-fpm
 
@@ -58,6 +60,7 @@ override_dh_auto_install:
 	$(MAKE) install INSTALL_ROOT=$(CURDIR)/debian/php-f8r-app
 	#Copy the configuration initial files
 	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php.ini
+	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/cli/php.ini
 	cp -v $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
 
 override_dh_installinit:
