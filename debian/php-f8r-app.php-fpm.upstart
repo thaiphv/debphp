@@ -7,4 +7,4 @@ limit nofile 5120 5120
 
 expect fork
 respawn
-exec /content/bin/php-fpm -c /etc/php5/cgi/php.ini -y /etc/php5/cgi/php-fpm.conf
+exec /usr/sbin/php-fpm -c /etc/php5/fpm/php.ini -y /etc/php5/fpm/php-fpm.conf
