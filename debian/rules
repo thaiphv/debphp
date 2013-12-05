@@ -10,11 +10,10 @@ override_dh_auto_test:
 	# 
 
 override_dh_auto_configure:
-	cd $(CURDIR)/dependency/pcre/
-	make distclean || true
-	./configure --enable-static --enable-jit
-	make
-	ln -s .libs/libpcre.a libpcre.a
+	cd $(CURDIR)/dependency/pcre/ && make distclean || true
+	cd $(CURDIR)/dependency/pcre/ && ./configure --enable-static --enable-jit
+	cd $(CURDIR)/dependency/pcre/ && make
+	cd $(CURDIR)/dependency/pcre/ && ln -s .libs/libpcre.a libpcre.a
 	cd $(CURDIR)
 	rm configure
 	PHP_AUTOCONF=autoconf2.59 ./buildconf --force
