@@ -57,7 +57,7 @@ override_dh_auto_install:
 	#Copy the configuration initial files
 	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php.ini
 	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/cli/php.ini
-	cp -v $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
+	#cp -v $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
 
 override_dh_installinit:
 	dh_installinit --name=php-fpm
