@@ -43,6 +43,7 @@ override_dh_auto_configure:
 	--enable-sysvsem --enable-sysvshm --enable-wddx --with-xmlrpc \
 	--enable-zip --with-pear=/usr/share/pear --with-zend-vm --enable-apc \
 	--with-imagick --enable-memcache --enable-proctitle --enable-oauth --with-xhprof \
+	--with-enchant \
 	--with-pcre-regex=$(CURDIR)/dependency/pcre/
 
 override_dh_auto_build:
