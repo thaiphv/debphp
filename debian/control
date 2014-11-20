@@ -21,7 +21,8 @@ Build-Depends: debhelper (>= 8),
                libmagick++-dev,
                libssl-dev,
                libncurses5-dev,
-               re2c
+               re2c,
+               libtidy-dev
 Standards-Version: 5.3.27
 
 Package: php-f8r-app
