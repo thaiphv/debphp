@@ -36,8 +36,8 @@ mkdir -p dist/dependency
 
 cd dist/dependency
 
-wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.33.tar.bz2
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.bz2
 
-tar xjf pcre-8.33.tar.bz2 && mv -v pcre-8.33 pcre
+tar xjf pcre-8.36.tar.bz2 && rm -r pcre && mv -v pcre-8.36 pcre
 
-rm -vf pcre-8.33.tar.bz2
+rm -vf pcre-8.36.tar.bz2
