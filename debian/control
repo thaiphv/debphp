@@ -1,6 +1,6 @@
 Source: php-f8r-app
-Section: php
 Maintainer: Jedi <jedi@freelancer.com>
+Section: php
 Priority: optional
 Build-Depends: debhelper (>= 8),
                build-essential,
@@ -24,6 +24,7 @@ Build-Depends: debhelper (>= 8),
                re2c,
                libtidy-dev
 Standards-Version: 5.3.27
+Homepage: https://gitlab.freelancer.com/pkg/php-f8r-app/
 
 Package: php-f8r-app
 Architecture: amd64
