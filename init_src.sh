@@ -16,7 +16,6 @@ wget http://pecl.php.net/get/APC-3.1.9.tgz
 wget http://pecl.php.net/get/imagick-3.0.1.tgz
 wget http://pecl.php.net/get/proctitle-0.1.2.tgz
 wget http://pecl.php.net/get/ncurses-1.0.2.tgz
-wget http://pecl.php.net/get/xhprof-0.9.3.tgz
 
 for i in *tgz; do
     tar xzf $i
