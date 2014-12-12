@@ -30,13 +30,3 @@ mv APC apc
 find . -maxdepth 1 -type d ! -path . -exec mv -v {} ../dist/ext ';'
 
 cd ${WORK_DIR} && rm -rvf tmp
-
-mkdir -p dist/dependency
-
-cd dist/dependency
-
-wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.bz2
-
-tar xjf pcre-8.36.tar.bz2 && rm -r pcre && mv -v pcre-8.36 pcre
-
-rm -vf pcre-8.36.tar.bz2
