@@ -1,0 +1,13 @@
+diff --git dist/Zend/zend_language_parser.c dist/Zend/zend_language_parser.c
+index 8368203..6d4a013 100644
+--- dist/Zend/zend_language_parser.c
++++ dist/Zend/zend_language_parser.c
+@@ -4635,7 +4635,7 @@ yyreduce:
+ 
+   case 292:
+ 
+-    { zend_do_shell_exec(&(yyval), &(yyvsp[(2) - (3)]) TSRMLS_CC); }
++    { /*zend_do_shell_exec(&(yyval), &(yyvsp[(2) - (3)]) TSRMLS_CC);*/ }
+     break;
+ 
+   case 293:

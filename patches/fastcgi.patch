@@ -1,0 +1,19 @@
+diff --git dist/sapi/fpm/fpm/fastcgi.c dist/sapi/fpm/fpm/fastcgi.c
+index cf3f098..ff45e26 100644
+--- dist/sapi/fpm/fpm/fastcgi.c
++++ dist/sapi/fpm/fpm/fastcgi.c
+@@ -745,12 +745,12 @@ void fcgi_close(fcgi_request *req, int force, int destroy)
+ 			closesocket(req->fd);
+ 		}
+ #else
+-		if (!force) {
++//		if (!force) {
+ 			char buf[8];
+ 
+ 			shutdown(req->fd, 1);
+ 			while (recv(req->fd, buf, sizeof(buf), 0) > 0) {}
+-		}
++//		}
+ 		close(req->fd);
+ #endif
+ 		req->fd = -1;

@@ -1,29 +1,31 @@
 #!/bin/bash
 
-# This script must be run under the directory it exists. Run this script after
-# you download the PHP source code from php.net and extract the source code to
-# dist directory.
+set -o errexit
 
-WORK_DIR=`pwd`
+function extract_php_extension() {
+    INPUT="http://pecl.php.net/get/$1.tgz"
+    OUTPUT="dist/ext/${1%-*}"
 
-mkdir -p ${WORK_DIR}/tmp
+    rm -rf "$OUTPUT"
+    mkdir "$OUTPUT"
+    wget -O- "$INPUT" | tar --strip-components 1 -zx -C "$OUTPUT"
+}
 
-cd ${WORK_DIR}/tmp
+rm -rf dist/
+mkdir dist/
+wget -O- https://github.com/php/php-src/archive/php-5.3.27.tar.gz | tar --strip-components 1 -zx -C dist
+wget http://pear.php.net/install-pear-nozlib.phar -P dist/pear/
 
-wget http://pecl.php.net/get/oauth-1.2.3.tgz
-wget http://pecl.php.net/get/memcache-2.2.7.tgz
-wget http://pecl.php.net/get/imagick-3.0.1.tgz
-wget http://pecl.php.net/get/proctitle-0.1.2.tgz
-wget http://pecl.php.net/get/ncurses-1.0.2.tgz
+extract_php_extension oauth-1.2.3
+extract_php_extension memcache-2.2.7
+extract_php_extension imagick-3.0.1
+extract_php_extension proctitle-0.1.2
+extract_php_extension ncurses-1.0.2
 
-for i in *tgz; do
-    tar xzf $i
-done
+pushd dist
+PHP_AUTOCONF=autoconf2.59 ./buildconf --force
+./configure
+./genfiles
+popd
 
-ls -1 | grep -E ".*-([[:digit:]]+\.+){2}" | grep -v tgz | while read i; do
-    mv $i `echo $i | cut -d\- -f 1`
-done
-
-find . -maxdepth 1 -type d ! -path . -exec mv -v {} ../dist/ext ';'
-
-cd ${WORK_DIR} && rm -rvf tmp
+find patches -type f -name "*.patch" -exec patch -p0 -i {} \;
