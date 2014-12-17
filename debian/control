@@ -23,7 +23,7 @@ Build-Depends: debhelper (>= 8),
                libncurses5-dev,
                re2c,
                libtidy-dev
-Standards-Version: 5.3.27
+Standards-Version: 5.3.29
 Homepage: https://git.freelancer.com/pkg/php-f8r-app/
 Vcs-Git: git://git.freelancer.com/pkg/php-f8r-app.git
 Vcs-Browser: https://git.freelancer.com/pkg/php-f8r-app/

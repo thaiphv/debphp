@@ -13,7 +13,7 @@ function extract_php_extension() {
 
 rm -rf dist/
 mkdir dist/
-wget -O- https://github.com/php/php-src/archive/php-5.3.27.tar.gz | tar --strip-components 1 -zx -C dist
+wget -O- https://github.com/php/php-src/archive/php-5.3.29.tar.gz | tar --strip-components 1 -zx -C dist
 wget http://pear.php.net/install-pear-nozlib.phar -P dist/pear/
 
 extract_php_extension oauth-1.2.3

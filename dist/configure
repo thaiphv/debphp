@@ -2118,7 +2118,7 @@ echo "$as_me: error: host_alias is not set!" >&2;}
 
 PHP_MAJOR_VERSION=5
 PHP_MINOR_VERSION=3
-PHP_RELEASE_VERSION=27
+PHP_RELEASE_VERSION=29
 PHP_EXTRA_VERSION=""
 PHP_VERSION="$PHP_MAJOR_VERSION.$PHP_MINOR_VERSION.$PHP_RELEASE_VERSION$PHP_EXTRA_VERSION"
 PHP_VERSION_ID=`expr $PHP_MAJOR_VERSION \* 10000 + $PHP_MINOR_VERSION \* 100 + $PHP_RELEASE_VERSION`
@@ -3871,7 +3871,7 @@ test -n "$YACC" || YACC="yacc"
 
 
   # we only support certain bison versions
-  bison_version_list="1.28 1.35 1.75 1.875 2.0 2.1 2.2 2.3 2.4 2.4.1 2.4.2 2.4.3 2.5 2.5.1 2.6 2.6.1 2.6.2"
+  bison_version_list="1.28 1.35 1.75 1.875 2.0 2.1 2.2 2.3 2.4 2.4.1 2.4.2 2.4.3 2.5 2.5.1 2.6 2.6.1 2.6.2 2.6.4"
 
   # for standalone build of Zend Engine
   test -z "$SED" && SED=sed
@@ -22730,7 +22730,7 @@ int main(int argc, char *argv[])
 {
   FILE *fp;
   long position;
-  char *filename = "/tmp/phpglibccheck";
+  char *filename = tmpnam(NULL);
 
   fp = fopen(filename, "w");
   if (fp == NULL) {
@@ -138227,7 +138227,7 @@ echo "${ECHO_T}${T_MD}Configuring Zend${T_ME}" >&6
 
 
   # we only support certain bison versions
-  bison_version_list="1.28 1.35 1.75 1.875 2.0 2.1 2.2 2.3 2.4 2.4.1 2.4.2 2.4.3 2.5 2.5.1 2.6 2.6.1 2.6.2"
+  bison_version_list="1.28 1.35 1.75 1.875 2.0 2.1 2.2 2.3 2.4 2.4.1 2.4.2 2.4.3 2.5 2.5.1 2.6 2.6.1 2.6.2 2.6.4"
 
   # for standalone build of Zend Engine
   test -z "$SED" && SED=sed
