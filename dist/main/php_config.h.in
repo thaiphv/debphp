@@ -108,9 +108,6 @@
 /* Whether to build iconv as dynamic module */
 #undef COMPILE_DL_ICONV
 
-/* Whether to build imagick as dynamic module */
-#undef COMPILE_DL_IMAGICK
-
 /* Whether to build imap as dynamic module */
 #undef COMPILE_DL_IMAP
 
@@ -940,9 +937,6 @@
 
 /* Define to 1 if you have the <ieeefp.h> header file. */
 #undef HAVE_IEEEFP_H
-
-/* */
-#undef HAVE_IMAGICK
 
 /* */
 #undef HAVE_IMAP
@@ -2110,9 +2104,6 @@
 
 /* Whether iconv supports error no or not */
 #undef ICONV_SUPPORTS_ERRNO
-
-/* */
-#undef IMAGICK_USE_NEW_HEADER
 
 /* */
 #undef ISOLARIS

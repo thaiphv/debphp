@@ -1267,8 +1267,6 @@ Optional Packages:
   --with-gmp=DIR        Include GNU MP support
   --with-mhash=DIR      Include mhash support
   --without-iconv=DIR   Exclude iconv support
- --with-imagick=DIR	Enables the imagick extension. DIR is the prefix to Imagemagick installation directory.
- --with-imagick-gm=DIR	GraphicsMagick backend. NO LONGER SUPPORTED!
   --with-imap=DIR       Include IMAP support. DIR is the c-client install prefix
   --with-kerberos=DIR     IMAP: Include Kerberos support. DIR is the Kerberos install prefix
   --with-imap-ssl=DIR     IMAP: Include SSL support. DIR is the OpenSSL install prefix
@@ -63828,642 +63826,6 @@ EOF
 echo "$as_me: error: Please reinstall the iconv library." >&2;}
    { (exit 1); exit 1; }; }
   fi
-fi
-
-
-php_with_imagick=no
-
-echo "$as_me:$LINENO: checking whether to enable the imagick extension" >&5
-echo $ECHO_N "checking whether to enable the imagick extension... $ECHO_C" >&6
-
-# Check whether --with-imagick or --without-imagick was given.
-if test "${with_imagick+set}" = set; then
-  withval="$with_imagick"
-  PHP_IMAGICK=$withval
-else
-
-  PHP_IMAGICK=no
-  test "$PHP_ENABLE_ALL" && PHP_IMAGICK=$PHP_ENABLE_ALL
-
-fi;
-
-
-ext_output="yes, shared"
-ext_shared=yes
-case $PHP_IMAGICK in
-shared,*)
-  PHP_IMAGICK=`echo "$PHP_IMAGICK"|$SED 's/^shared,//'`
-  ;;
-shared)
-  PHP_IMAGICK=yes
-  ;;
-no)
-  ext_output=no
-  ext_shared=no
-  ;;
-*)
-  ext_output=yes
-  ext_shared=no
-  ;;
-esac
-
-
-
-echo "$as_me:$LINENO: result: $ext_output" >&5
-echo "${ECHO_T}$ext_output" >&6
-
-
-
-
-
-php_with_imagick_gm=no
-
-echo "$as_me:$LINENO: checking whether to enable the imagick GraphicsMagick backend" >&5
-echo $ECHO_N "checking whether to enable the imagick GraphicsMagick backend... $ECHO_C" >&6
-
-# Check whether --with-imagick-gm or --without-imagick-gm was given.
-if test "${with_imagick_gm+set}" = set; then
-  withval="$with_imagick_gm"
-  PHP_IMAGICK_GM=$withval
-else
-
-  PHP_IMAGICK_GM=no
-
-
-fi;
-
-ext_output=$PHP_IMAGICK_GM
-echo "$as_me:$LINENO: result: $ext_output" >&5
-echo "${ECHO_T}$ext_output" >&6
-
-
-
-
-if test $PHP_IMAGICK_GM != "no"; then
-	{ { echo "$as_me:$LINENO: error: GraphicsMagick backend is no longer supported" >&5
-echo "$as_me: error: GraphicsMagick backend is no longer supported" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-if test $PHP_IMAGICK != "no"; then
-
-  echo "$as_me:$LINENO: checking ImageMagick MagickWand API configuration program" >&5
-echo $ECHO_N "checking ImageMagick MagickWand API configuration program... $ECHO_C" >&6
-
-  for i in $PHP_IMAGICK /usr/local /usr;
-  do
-    test -r $i/bin/MagickWand-config && IMAGICK_AFTER_BWC_BREAK=true && WAND_BINARY=$i/bin/MagickWand-config && break
-  done
-
-	if test -z "$WAND_BINARY"; then
-    for i in $PHP_IMAGICK /usr/local /usr;
-    do
-      test -r $i/bin/Wand-config && WAND_BINARY=$i/bin/Wand-config && break
-    done
-  fi
-
-  if test -z "$WAND_BINARY"; then
-    { { echo "$as_me:$LINENO: error: not found. Please provide a path to MagickWand-config or Wand-config program." >&5
-echo "$as_me: error: not found. Please provide a path to MagickWand-config or Wand-config program." >&2;}
-   { (exit 1); exit 1; }; }
-  fi
-
-  echo "$as_me:$LINENO: result: found in $WAND_BINARY" >&5
-echo "${ECHO_T}found in $WAND_BINARY" >&6
-
-  IMAGEMAGICK_VERSION_ORIG=`$WAND_BINARY --version`
-  IMAGEMAGICK_VERSION_MASK=`echo ${IMAGEMAGICK_VERSION_ORIG} | awk 'BEGIN { FS = "."; } { printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-
-  echo "$as_me:$LINENO: checking if ImageMagick version is at least 6.2.4" >&5
-echo $ECHO_N "checking if ImageMagick version is at least 6.2.4... $ECHO_C" >&6
-  if test "$IMAGEMAGICK_VERSION_MASK" -ge 6002004; then
-    echo "$as_me:$LINENO: result: found version $IMAGEMAGICK_VERSION_ORIG" >&5
-echo "${ECHO_T}found version $IMAGEMAGICK_VERSION_ORIG" >&6
-  else
-    { { echo "$as_me:$LINENO: error: no. You need at least Imagemagick version 6.2.4 to use Imagick." >&5
-echo "$as_me: error: no. You need at least Imagemagick version 6.2.4 to use Imagick." >&2;}
-   { (exit 1); exit 1; }; }
-  fi
-
-  WAND_DIR=`$WAND_BINARY --prefix`
-
-  if test -z "$IMAGICK_AFTER_BWC_BREAK"; then
-    echo "$as_me:$LINENO: checking for magick-wand.h header file" >&5
-echo $ECHO_N "checking for magick-wand.h header file... $ECHO_C" >&6
-    if test -r $WAND_DIR/include/wand/magick-wand.h; then
-      echo "$as_me:$LINENO: result: found in $WAND_DIR/include/wand/magick-wand.h" >&5
-echo "${ECHO_T}found in $WAND_DIR/include/wand/magick-wand.h" >&6
-  	else
-  		{ { echo "$as_me:$LINENO: error: Cannot locate header file magick-wand.h" >&5
-echo "$as_me: error: Cannot locate header file magick-wand.h" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-  else
-    echo "$as_me:$LINENO: checking for MagickWand.h header file" >&5
-echo $ECHO_N "checking for MagickWand.h header file... $ECHO_C" >&6
-
-    if test -r $WAND_DIR/include/ImageMagick/wand/MagickWand.h; then
-      echo "$as_me:$LINENO: result: found in $WAND_DIR/include/ImageMagick/wand/MagickWand.h" >&5
-echo "${ECHO_T}found in $WAND_DIR/include/ImageMagick/wand/MagickWand.h" >&6
-    else
-      { { echo "$as_me:$LINENO: error: Cannot locate header file MagickWand.h" >&5
-echo "$as_me: error: Cannot locate header file MagickWand.h" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-
-cat >>confdefs.h <<\_ACEOF
-#define IMAGICK_USE_NEW_HEADER 1
-_ACEOF
-
-    PHP_IMAGICK_USE_NEW_HEADER=1
-  fi
-
-  echo "$as_me:$LINENO: checking PHP version is at least 5.1.3" >&5
-echo $ECHO_N "checking PHP version is at least 5.1.3... $ECHO_C" >&6
-
-  if test -z "${PHP_VERSION_ID}"; then
-    if test -z "${PHP_CONFIG}"; then
-      { { echo "$as_me:$LINENO: error: php-config not found" >&5
-echo "$as_me: error: php-config not found" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-    if test -z "${AWK}"; then
-      { { echo "$as_me:$LINENO: error: awk not found" >&5
-echo "$as_me: error: awk not found" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-    PHP_IMAGICK_FOUND_VERSION=`${PHP_CONFIG} --version`
-    PHP_IMAGICK_FOUND_VERNUM=`echo "${PHP_IMAGICK_FOUND_VERSION}" | $AWK 'BEGIN { FS = "."; } { printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
-  else
-    PHP_IMAGICK_FOUND_VERNUM="${PHP_VERSION_ID}"
-    PHP_IMAGICK_FOUND_VERSION="${PHP_VERSION}"
-  fi
-
-  if test "$PHP_IMAGICK_FOUND_VERNUM" -ge "50103"; then
-    echo "$as_me:$LINENO: result: yes. found $PHP_IMAGICK_FOUND_VERSION" >&5
-echo "${ECHO_T}yes. found $PHP_IMAGICK_FOUND_VERSION" >&6
-  else
-    { { echo "$as_me:$LINENO: error: no. found $PHP_IMAGICK_FOUND_VERSION" >&5
-echo "$as_me: error: no. found $PHP_IMAGICK_FOUND_VERSION" >&2;}
-   { (exit 1); exit 1; }; }
-  fi
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_IMAGICK 1
-_ACEOF
-
-
-  IMAGICK_LIBS=`$WAND_BINARY --libs`
-  IMAGICK_INCS=`$WAND_BINARY --cflags`
-
-
-  for ac_i in $IMAGICK_LIBS; do
-    case $ac_i in
-    -pthread)
-      if test "$ext_shared" = "yes"; then
-        IMAGICK_SHARED_LIBADD="$IMAGICK_SHARED_LIBADD -pthread"
-      else
-
-
-  unique=`echo $ac_i|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$EXTRA_LDFLAGS$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "EXTRA_LDFLAGS$unique=set"
-    EXTRA_LDFLAGS="$EXTRA_LDFLAGS $ac_i"
-  fi
-
-      fi
-    ;;
-    -l*)
-      ac_ii=`echo $ac_i|cut -c 3-`
-
-
-  case $ac_ii in
-  c|c_r|pthread*) ;;
-  *)
-    if test "$ext_shared" = "yes"; then
-        IMAGICK_SHARED_LIBADD="$IMAGICK_SHARED_LIBADD -l$ac_ii"
-    else
-
-
-  case $ac_ii in
-  c|c_r|pthread*) ;;
-  *)
-      LIBS="$LIBS -l$ac_ii"
-   ;;
-  esac
-
-
-    fi
-   ;;
-  esac
-
-
-    ;;
-    -L*)
-      ac_ii=`echo $ac_i|cut -c 3-`
-
-  if test "$ac_ii" != "/usr/$PHP_LIBDIR" && test "$ac_ii" != "/usr/lib"; then
-
-  if test -z "$ac_ii" || echo "$ac_ii" | grep '^/' >/dev/null ; then
-    ai_p=$ac_ii
-  else
-
-    ep_dir="`echo $ac_ii|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$ac_ii\"`"
-  fi
-
-
-      if test "$ext_shared" = "yes"; then
-        IMAGICK_SHARED_LIBADD="-L$ai_p $IMAGICK_SHARED_LIBADD"
-        test -n "$ld_runpath_switch" && IMAGICK_SHARED_LIBADD="$ld_runpath_switch$ai_p $IMAGICK_SHARED_LIBADD"
-      else
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$LIBPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "LIBPATH$unique=set"
-
-    test -n "$ld_runpath_switch" && LDFLAGS="$LDFLAGS $ld_runpath_switch$ai_p"
-    LDFLAGS="$LDFLAGS -L$ai_p"
-    PHP_RPATHS="$PHP_RPATHS $ai_p"
-
-  fi
-
-
-      fi
-
-  fi
-
-    ;;
-    esac
-  done
-
-
-  for ac_i in $IMAGICK_INCS; do
-    case $ac_i in
-    -I*)
-      ac_ii=`echo $ac_i|cut -c 3-`
-
-  if test "$ac_ii" != "/usr/include"; then
-
-  if test -z "$ac_ii" || echo "$ac_ii" | grep '^/' >/dev/null ; then
-    ai_p=$ac_ii
-  else
-
-    ep_dir="`echo $ac_ii|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$ac_ii\"`"
-  fi
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$INCLUDEPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "INCLUDEPATH$unique=set"
-
-      if test ""; then
-        INCLUDES="-I$ai_p $INCLUDES"
-      else
-        INCLUDES="$INCLUDES -I$ai_p"
-      fi
-
-  fi
-
-  fi
-
-    ;;
-    esac
-  done
-
-
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST IMAGICK_SHARED_LIBADD"
-
-
-
-  ext_builddir=ext/imagick
-  ext_srcdir=$abs_srcdir/ext/imagick
-
-  ac_extra=
-
-  if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" != "cli"; then
-    PHP_IMAGICK_SHARED=no
-
-
-  case ext/imagick in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/imagick"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/imagick/"; ac_bdir="ext/imagick/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in imagick_class.c imagickdraw_class.c imagickpixel_class.c imagickpixeliterator_class.c imagick_helpers.c imagick_read.c imagick.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_GLOBAL_OBJS="$PHP_GLOBAL_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-    EXT_STATIC="$EXT_STATIC imagick"
-    if test "$ext_shared" != "nocli"; then
-      EXT_CLI_STATIC="$EXT_CLI_STATIC imagick"
-    fi
-  else
-    if test "$ext_shared" = "shared" || test "$ext_shared" = "yes"; then
-      PHP_IMAGICK_SHARED=yes
-
-  case ext/imagick in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/imagick"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/imagick/"; ac_bdir="ext/imagick/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$shared_c_pre
-  b_cxx_pre=$shared_cxx_pre
-  b_c_meta=$shared_c_meta
-  b_cxx_meta=$shared_cxx_meta
-  b_c_post=$shared_c_post
-  b_cxx_post=$shared_cxx_post
-  b_lo=$shared_lo
-
-
-  old_IFS=$IFS
-  for ac_src in imagick_class.c imagickdraw_class.c imagickpixel_class.c imagickpixeliterator_class.c imagick_helpers.c imagick_read.c imagick.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      shared_objects_imagick="$shared_objects_imagick $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-      case $host_alias in
-        *netware*)
-
-  install_modules="install-modules"
-
-  case $host_alias in
-    *aix*)
-      suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/phpimagick.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_imagick) $(PHPIMAGICK_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/phpimagick.so '$ext_builddir'/phpimagick.so'
-      ;;
-    *netware*)
-      suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_imagick) -L$(top_builddir)/netware -lphp5lib $(IMAGICK_SHARED_LIBADD)'
-      ;;
-    *)
-      suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_imagick) $(PHPIMAGICK_SHARED_LIBADD)'
-      ;;
-  esac
-
-  if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/phpimagick.$suffix"
-  else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/phpimagick.$suffix"
-  fi
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_imagick"
-
-  cat >>Makefile.objects<<EOF
-\$(phplibdir)/phpimagick.$suffix: $ext_builddir/phpimagick.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/phpimagick.$suffix \$(phplibdir)
-
-$ext_builddir/phpimagick.$suffix: \$(shared_objects_imagick) \$(PHPIMAGICK_SHARED_DEPENDENCIES)
-	$link_cmd
-
-EOF
-
-          ;;
-        *)
-
-  install_modules="install-modules"
-
-  case $host_alias in
-    *aix*)
-      suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/imagick.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_imagick) $(IMAGICK_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/imagick.so '$ext_builddir'/imagick.so'
-      ;;
-    *netware*)
-      suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_imagick) -L$(top_builddir)/netware -lphp5lib $(GICK_SHARED_LIBADD)'
-      ;;
-    *)
-      suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_imagick) $(IMAGICK_SHARED_LIBADD)'
-      ;;
-  esac
-
-  if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/imagick.$suffix"
-  else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/imagick.$suffix"
-  fi
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_imagick"
-
-  cat >>Makefile.objects<<EOF
-\$(phplibdir)/imagick.$suffix: $ext_builddir/imagick.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/imagick.$suffix \$(phplibdir)
-
-$ext_builddir/imagick.$suffix: \$(shared_objects_imagick) \$(IMAGICK_SHARED_DEPENDENCIES)
-	$link_cmd
-
-EOF
-
-          ;;
-      esac
-
-cat >>confdefs.h <<_ACEOF
-#define COMPILE_DL_IMAGICK 1
-_ACEOF
-
-    fi
-  fi
-
-  if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" = "cli"; then
-    PHP_IMAGICK_SHARED=no
-    case "$PHP_SAPI" in
-      cgi|embed)
-
-
-  case ext/imagick in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/imagick"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/imagick/"; ac_bdir="ext/imagick/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in imagick_class.c imagickdraw_class.c imagickpixel_class.c imagickpixeliterator_class.c imagick_helpers.c imagick_read.c imagick.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_GLOBAL_OBJS="$PHP_GLOBAL_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-        EXT_STATIC="$EXT_STATIC imagick"
-        ;;
-      *)
-
-
-  case ext/imagick in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/imagick"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/imagick/"; ac_bdir="ext/imagick/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in imagick_class.c imagickdraw_class.c imagickpixel_class.c imagickpixeliterator_class.c imagick_helpers.c imagick_read.c imagick.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_CLI_OBJS="$PHP_CLI_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-        ;;
-    esac
-    EXT_CLI_STATIC="$EXT_CLI_STATIC imagick"
-  fi
-
-
-    BUILD_DIR="$BUILD_DIR $ext_builddir"
-
-
-
-  if test "$ext_builddir" = "."; then
-    PHP_PECL_EXTENSION=imagick
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST PHP_PECL_EXTENSION"
-
-  fi
-
-
-
-    header_path=ext/imagick
-    for header_file in php_imagick.h php_imagick_defs.h php_imagick_shared.h php_imagick_config.h; do
-      hp_hf="$header_path/$header_file"
-
-
-  unique=`echo $hp_hf|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$INSTALLHEADERS$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "INSTALLHEADERS$unique=set"
-
-        INSTALL_HEADERS="$INSTALL_HEADERS $hp_hf"
-
-  fi
-
-    done
-
-
 fi
 
 
@@ -140459,7 +139821,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 140462 "configure"
+#line 139824 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -142931,7 +142293,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 142934 "configure"' > conftest.$ac_ext
+  echo '#line 142296 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -144389,7 +143751,7 @@ else
       LDFLAGS="$LDFLAGS -Wl,-exported_symbols_list,conftest.sym"
 
 cat > conftest.$ac_ext <<EOF
-#line 144392 "configure"
+#line 143754 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -144548,11 +143910,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:144551: $lt_compile\"" >&5)
+   (eval echo "\"configure:143913: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "configure:144555: \$? = $ac_status" >&5
+   echo "configure:143917: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -144846,11 +144208,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:144849: $lt_compile\"" >&5)
+   (eval echo "\"configure:144211: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "configure:144853: \$? = $ac_status" >&5
+   echo "configure:144215: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -144950,11 +144312,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:144953: $lt_compile\"" >&5)
+   (eval echo "\"configure:144315: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "configure:144957: \$? = $ac_status" >&5
+   echo "configure:144319: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -145414,7 +144776,7 @@ _LT_EOF
        # Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 145417 "configure"
+#line 144779 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -145456,7 +144818,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 	 # Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 145459 "configure"
+#line 144821 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -147299,7 +146661,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 147302 "configure"
+#line 146664 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -147399,7 +146761,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 147402 "configure"
+#line 146764 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -148471,7 +147833,7 @@ case $host_os in
       # Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 148474 "configure"
+#line 147836 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -148514,7 +147876,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 	# Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 148517 "configure"
+#line 147879 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -149766,11 +149128,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:149769: $lt_compile\"" >&5)
+   (eval echo "\"configure:149131: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "configure:149773: \$? = $ac_status" >&5
+   echo "configure:149135: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -149870,11 +149232,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:149873: $lt_compile\"" >&5)
+   (eval echo "\"configure:149235: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "configure:149877: \$? = $ac_status" >&5
+   echo "configure:149239: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
