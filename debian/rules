@@ -47,7 +47,7 @@ override_dh_auto_install:
 	cp -v $(CURDIR)/debian/php-f8r-app/usr/etc/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
 
 override_dh_installinit:
-	dh_installinit --name=php-fpm
+	dh_installinit --name=php5-fpm
 
 clean:
 	dh $@
