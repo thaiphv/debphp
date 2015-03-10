@@ -147,9 +147,6 @@
 /* Whether to build mysqlnd as dynamic module */
 #undef COMPILE_DL_MYSQLND
 
-/* Whether to build ncurses as dynamic module */
-#undef COMPILE_DL_NCURSES
-
 /* Whether to build oauth as dynamic module */
 #undef COMPILE_DL_OAUTH
 
@@ -1254,27 +1251,6 @@
 
 /* Define to 1 if you have the `nanosleep' function. */
 #undef HAVE_NANOSLEEP
-
-/* */
-#undef HAVE_NCURSESLIB
-
-/* */
-#undef HAVE_NCURSES_ASSUME_DEFAULT_COLORS
-
-/* */
-#undef HAVE_NCURSES_COLOR_SET
-
-/* */
-#undef HAVE_NCURSES_H
-
-/* */
-#undef HAVE_NCURSES_PANEL
-
-/* */
-#undef HAVE_NCURSES_SLK_COLOR
-
-/* */
-#undef HAVE_NCURSES_USE_EXTENDED_NAMES
 
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 #undef HAVE_NDIR_H

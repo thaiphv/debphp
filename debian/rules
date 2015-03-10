@@ -29,7 +29,7 @@ override_dh_auto_configure:
 	--enable-gd-native-ttf --with-gettext --with-mhash \
 	--enable-mbstring --enable-intl --with-libmbfl --with-onig \
 	--with-mcrypt --with-mysql=mysqlnd --with-mysqli=mysqlnd \
-	--with-ncurses  --with-openssl --enable-phar --enable-pcntl \
+	--with-openssl --enable-phar --enable-pcntl \
 	--with-pdo-mysql=mysqlnd --without-pdo-sqlite  --with-readline \
 	--enable-shmop --enable-soap --enable-sockets --enable-sysvmsg \
 	--enable-sysvsem --enable-sysvshm --enable-wddx --with-xmlrpc \
