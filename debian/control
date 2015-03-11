@@ -10,19 +10,13 @@ Build-Depends: debhelper (>= 8),
                libxml2-dev,
                libbz2-dev,
                libcurl4-openssl-dev,
-               libfreetype6-dev,
-               libpng-dev,
-               libt1-dev,
                libicu-dev,
                libmcrypt-dev,
                libreadline-dev,
                libpcre3-dev,
                g++,
-               libmagick++-dev,
                libssl-dev,
-               libncurses5-dev,
-               re2c,
-               libtidy-dev
+               re2c
 Standards-Version: 5.3.29
 Homepage: https://git.freelancer.com/pkg/php-f8r-app/
 Vcs-Git: git://git.freelancer.com/pkg/php-f8r-app.git
