@@ -93,9 +93,6 @@
 /* Whether to build ftp as dynamic module */
 #undef COMPILE_DL_FTP
 
-/* Whether to build gd as dynamic module */
-#undef COMPILE_DL_GD
-
 /* Whether to build gettext as dynamic module */
 #undef COMPILE_DL_GETTEXT
 
@@ -381,9 +378,6 @@
 #undef ENABLE_CHROOT_FUNC
 
 /* */
-#undef ENABLE_GD_TTF
-
-/* */
 #undef ENCHANT_VERSION_STRING
 
 /* */
@@ -541,9 +535,6 @@
 /* */
 #undef HAVE_CODBC
 
-/* */
-#undef HAVE_COLORCLOSESTHWB
-
 /* Whether you have a Continuity Server */
 #undef HAVE_CONTINUITY
 
@@ -677,9 +668,6 @@
 /* Whether you want EXIF (metadata from images) support */
 #undef HAVE_EXIF
 
-/* Define to 1 if you have the `fabsf' function. */
-#undef HAVE_FABSF
-
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
 
@@ -688,9 +676,6 @@
 
 /* Define to 1 if you have the `flock' function. */
 #undef HAVE_FLOCK
-
-/* Define to 1 if you have the `floorf' function. */
-#undef HAVE_FLOORF
 
 /* Define if flush should be called explicitly after a buffered io. */
 #undef HAVE_FLUSHIO
@@ -736,78 +721,6 @@
 
 /* Define to 1 if you have the `gcvt' function. */
 #undef HAVE_GCVT
-
-/* */
-#undef HAVE_GDIMAGECOLORRESOLVE
-
-/* */
-#undef HAVE_GD_BUNDLED
-
-/* */
-#undef HAVE_GD_CACHE_CREATE
-
-/* */
-#undef HAVE_GD_DYNAMIC_CTX_EX
-
-/* */
-#undef HAVE_GD_FONTCACHESHUTDOWN
-
-/* */
-#undef HAVE_GD_FONTMUTEX
-
-/* */
-#undef HAVE_GD_FREEFONTCACHE
-
-/* */
-#undef HAVE_GD_GD2
-
-/* */
-#undef HAVE_GD_GIF_CREATE
-
-/* */
-#undef HAVE_GD_GIF_CTX
-
-/* */
-#undef HAVE_GD_GIF_READ
-
-/* */
-#undef HAVE_GD_IMAGEELLIPSE
-
-/* */
-#undef HAVE_GD_IMAGESETBRUSH
-
-/* */
-#undef HAVE_GD_IMAGESETTILE
-
-/* */
-#undef HAVE_GD_IMAGE_CONVOLUTION
-
-/* */
-#undef HAVE_GD_IMAGE_PIXELATE
-
-/* */
-#undef HAVE_GD_JPG
-
-/* */
-#undef HAVE_GD_PNG
-
-/* */
-#undef HAVE_GD_STRINGFT
-
-/* */
-#undef HAVE_GD_STRINGFTEX
-
-/* */
-#undef HAVE_GD_STRINGTTF
-
-/* */
-#undef HAVE_GD_WBMP
-
-/* */
-#undef HAVE_GD_XBM
-
-/* */
-#undef HAVE_GD_XPM
 
 /* Define if you have the getaddrinfo function */
 #undef HAVE_GETADDRINFO
@@ -1065,24 +978,6 @@
 #undef HAVE_LIBEXPAT
 
 /* */
-#undef HAVE_LIBFREETYPE
-
-/* */
-#undef HAVE_LIBGD
-
-/* */
-#undef HAVE_LIBGD13
-
-/* */
-#undef HAVE_LIBGD15
-
-/* */
-#undef HAVE_LIBGD20
-
-/* */
-#undef HAVE_LIBGD204
-
-/* */
 #undef HAVE_LIBICONV
 
 /* */
@@ -1120,9 +1015,6 @@
 
 /* */
 #undef HAVE_LIBSOCKET
-
-/* */
-#undef HAVE_LIBT1
 
 /* */
 #undef HAVE_LIBXML
@@ -2370,12 +2262,6 @@
 
 /* whether to check multibyte regex backtrack */
 #undef USE_COMBINATION_EXPLOSION_CHECK
-
-/* */
-#undef USE_GD_IMGSTRTTF
-
-/* */
-#undef USE_GD_JISX0208
 
 /* Define if cross-process locking is required by accept() */
 #undef USE_LOCKING
