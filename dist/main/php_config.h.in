@@ -264,9 +264,6 @@
 /* Whether to build xmlreader as dynamic module */
 #undef COMPILE_DL_XMLREADER
 
-/* Whether to build xmlrpc as dynamic module */
-#undef COMPILE_DL_XMLRPC
-
 /* Whether to build xmlwriter as dynamic module */
 #undef COMPILE_DL_XMLWRITER
 
@@ -1642,9 +1639,6 @@
 /* Define to 1 if you have the `strnlen' function. */
 #undef HAVE_STRNLEN
 
-/* Define to 1 if you have the `strpbrk' function. */
-#undef HAVE_STRPBRK
-
 /* Define to 1 if you have the `strpncpy' function. */
 #undef HAVE_STRPNCPY
 
@@ -1668,12 +1662,6 @@
 
 /* Define to 1 if you have the `strtoll' function. */
 #undef HAVE_STRTOLL
-
-/* Define to 1 if you have the `strtoul' function. */
-#undef HAVE_STRTOUL
-
-/* Define to 1 if you have the `strtoull' function. */
-#undef HAVE_STRTOULL
 
 /* whether you have struct flock */
 #undef HAVE_STRUCT_FLOCK
@@ -1913,17 +1901,8 @@
 /* */
 #undef HAVE_XML
 
-/* Define to 1 if you have the <xmlparse.h> header file. */
-#undef HAVE_XMLPARSE_H
-
 /* */
 #undef HAVE_XMLREADER
-
-/* */
-#undef HAVE_XMLRPC
-
-/* Define to 1 if you have the <xmltok.h> header file. */
-#undef HAVE_XMLTOK_H
 
 /* */
 #undef HAVE_XMLWRITER
@@ -2168,9 +2147,6 @@
 /* Whether to use Roxen in ZTS mode */
 #undef ROXEN_USE_ZTS
 
-/* The size of `char', as computed by sizeof. */
-#undef SIZEOF_CHAR
-
 /* The size of `char *', as computed by sizeof. */
 #undef SIZEOF_CHAR_P
 
@@ -2244,9 +2220,6 @@
 
 /* */
 #undef UCD_SNMP_HACK
-
-/* */
-#undef UNDEF_THREADS_HACK
 
 /* */
 #undef UNIXWARE
