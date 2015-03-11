@@ -34,7 +34,7 @@ override_dh_auto_configure:
 	--enable-shmop --enable-soap --enable-sockets --enable-sysvmsg \
 	--enable-sysvsem --enable-sysvshm --enable-wddx --with-xmlrpc \
 	--enable-zip --with-pear=/usr/share/pear --with-zend-vm --enable-apc \
-	--with-tidy --enable-memcache --enable-proctitle --enable-oauth
+	--enable-memcache --enable-proctitle --enable-oauth
 
 override_dh_auto_build:
 	LDFLAGS='-lstdc++' make -j 2

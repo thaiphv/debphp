@@ -21,6 +21,7 @@ wget -O- https://github.com/php/php-src/archive/php-5.3.29.tar.gz | tar --strip-
 wget http://pear.php.net/install-pear-nozlib.phar -P dist/pear/
 
 remove_php_extension gd
+remove_php_extension tidy
 extract_php_extension oauth-1.2.3
 extract_php_extension memcache-2.2.7
 extract_php_extension proctitle-0.1.2

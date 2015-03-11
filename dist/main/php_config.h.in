@@ -252,9 +252,6 @@
 /* Whether to build sysvshm as dynamic module */
 #undef COMPILE_DL_SYSVSHM
 
-/* Whether to build tidy as dynamic module */
-#undef COMPILE_DL_TIDY
-
 /* Whether to build tokenizer as dynamic module */
 #undef COMPILE_DL_TOKENIZER
 
@@ -1823,12 +1820,6 @@
 
 /* Define to 1 if you have the <termios.h> header file. */
 #undef HAVE_TERMIOS_H
-
-/* */
-#undef HAVE_TIDY
-
-/* */
-#undef HAVE_TIDYOPTGETDOC
 
 /* do we have times? */
 #undef HAVE_TIMES
