@@ -123,9 +123,6 @@
 /* Whether to build mbstring as dynamic module */
 #undef COMPILE_DL_MBSTRING
 
-/* Whether to build mcrypt as dynamic module */
-#undef COMPILE_DL_MCRYPT
-
 /* Whether to build memcache as dynamic module */
 #undef COMPILE_DL_MEMCACHE
 
@@ -955,9 +952,6 @@
 
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
-
-/* */
-#undef HAVE_LIBMCRYPT
 
 /* Whether you have libmm */
 #undef HAVE_LIBMM

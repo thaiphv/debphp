@@ -28,7 +28,7 @@ override_dh_auto_configure:
 	--enable-ftp --with-t1lib --with-jpeg-dir=/usr \
 	--with-gettext --with-mhash \
 	--enable-mbstring --enable-intl --with-libmbfl --with-onig \
-	--with-mcrypt --with-mysql=mysqlnd --with-mysqli=mysqlnd \
+	--with-mysql=mysqlnd --with-mysqli=mysqlnd \
 	--with-openssl --enable-phar --enable-pcntl \
 	--with-pdo-mysql=mysqlnd --without-pdo-sqlite  --with-readline \
 	--enable-shmop --enable-soap --enable-sockets --enable-sysvmsg \
