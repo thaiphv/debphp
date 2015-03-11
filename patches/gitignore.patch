@@ -55,11 +55,3 @@ index 6f291dc..d105986 100644
  
  # Test specific Ignores
  tests/*/*.diff
-@@ -226,7 +212,6 @@ main/config.w32.h
- main/stamp-h1
- main/streams/build-defs.h
- main/streams/stamp-h1
--pear/install-pear-nozlib.phar
- pear/phpize
- pear/run-tests
- pear/php-config
