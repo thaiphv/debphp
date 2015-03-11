@@ -19,6 +19,7 @@ rm -rf dist/
 mkdir dist/
 wget -O- https://github.com/php/php-src/archive/php-5.3.29.tar.gz | tar --strip-components 1 -zx -C dist
 
+remove_php_extension curl
 remove_php_extension gd
 remove_php_extension tidy
 remove_php_extension xmlrpc

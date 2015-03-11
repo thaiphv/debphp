@@ -24,7 +24,7 @@ override_dh_auto_configure:
 	--enable-magic-quotes --disable-ipv6 --without-sqlite3 \
 	--without-sqlite --disable-sqlite --with-zlib \
 	--enable-bcmath --with-bz2 --enable-calendar \
-	--with-curl --disable-dba --enable-exif \
+	--disable-dba --enable-exif \
 	--enable-ftp --with-t1lib --with-jpeg-dir=/usr \
 	--with-gettext --with-mhash \
 	--enable-mbstring --enable-intl --with-libmbfl --with-onig \

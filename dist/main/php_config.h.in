@@ -63,9 +63,6 @@
 /* Whether to build ctype as dynamic module */
 #undef COMPILE_DL_CTYPE
 
-/* Whether to build curl as dynamic module */
-#undef COMPILE_DL_CURL
-
 /* Whether to build date as dynamic module */
 #undef COMPILE_DL_DATE
 
@@ -552,27 +549,6 @@
 
 /* */
 #undef HAVE_CTYPE
-
-/* */
-#undef HAVE_CURL
-
-/* */
-#undef HAVE_CURL_EASY_STRERROR
-
-/* Have cURL with GnuTLS support */
-#undef HAVE_CURL_GNUTLS
-
-/* */
-#undef HAVE_CURL_MULTI_STRERROR
-
-/* Have cURL with OpenSSL support */
-#undef HAVE_CURL_OPENSSL
-
-/* Have cURL with SSL support */
-#undef HAVE_CURL_SSL
-
-/* */
-#undef HAVE_CURL_VERSION_INFO
 
 /* Define to 1 if you have the `cuserid' function. */
 #undef HAVE_CUSERID
@@ -1215,9 +1191,6 @@
 
 /* Define to 1 if the oniguruma library is available */
 #undef HAVE_ONIG
-
-/* Define to 1 if you have the <openssl/crypto.h> header file. */
-#undef HAVE_OPENSSL_CRYPTO_H
 
 /* */
 #undef HAVE_OPENSSL_EXT
@@ -2038,9 +2011,6 @@
 
 /* Define if your system has fork/vfork/CreateProcess */
 #undef PHP_CAN_SUPPORT_PROC_OPEN
-
-/* */
-#undef PHP_CURL_URL_WRAPPERS
 
 /* Whether the system supports extended DES salt */
 #undef PHP_EXT_DES_CRYPT
