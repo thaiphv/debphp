@@ -21,7 +21,7 @@ override_dh_auto_configure:
 	--with-config-file-scan-dir=/etc/php5/conf.d \
 	--enable-cli --enable-cgi --enable-fpm \
 	--with-fpm-user=www-data --with-fpm-group=www-data \
-	--enable-magic-quotes --disable-ipv6 --without-sqlite3 \
+	--enable-magic-quotes --enable-ipv6 --without-sqlite3 \
 	--without-sqlite --disable-sqlite --with-zlib \
 	--enable-bcmath --with-bz2 --enable-calendar \
 	--disable-dba --enable-exif \
