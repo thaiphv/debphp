@@ -1150,9 +1150,6 @@ Extensions:
   --disable-xmlreader     Disable XMLReader support
   --disable-xmlwriter     Disable XMLWriter support
   --enable-zip            Include Zip read/write support
-  --enable-memcache       Enable memcache support
-  --disable-memcache-session       Disable memcache session handler support
-  --enable-debug          compile with debugging symbols
   --enable-mysqlnd        Enable mysqlnd explicitly, will be done implicitly
                           when required by other extensions
   --disable-mysqlnd-compression-support
@@ -1366,7 +1363,6 @@ Optional Packages:
                           install directory (libxslt >= 1.1.0 required)
   --with-zlib-dir=DIR     ZIP: Set the path to libz install prefix
   --with-pcre-dir           ZIP: pcre install prefix
-  --with-zlib-dir=DIR   memcache: Set the path to ZLIB install prefix.
   --with-zlib-dir=DIR       mysqlnd: Set the path to libz install prefix
   --with-pear=DIR         Install PEAR in DIR PREFIX/lib/php
   --without-pear          Do not install PEAR
@@ -64676,9 +64672,6 @@ fi
 
 
 
-
-
-
 php_with_mssql=no
 
 echo "$as_me:$LINENO: checking for MSSQL support via FreeTDS" >&5
@@ -116184,1059 +116177,6 @@ fi
 
 
 
-php_enable_memcache=no
-
-echo "$as_me:$LINENO: checking whether to enable memcache support" >&5
-echo $ECHO_N "checking whether to enable memcache support... $ECHO_C" >&6
-# Check whether --enable-memcache or --disable-memcache was given.
-if test "${enable_memcache+set}" = set; then
-  enableval="$enable_memcache"
-  PHP_MEMCACHE=$enableval
-else
-
-  PHP_MEMCACHE=no
-  test "$PHP_ENABLE_ALL" && PHP_MEMCACHE=$PHP_ENABLE_ALL
-
-fi;
-
-
-ext_output="yes, shared"
-ext_shared=yes
-case $PHP_MEMCACHE in
-shared,*)
-  PHP_MEMCACHE=`echo "$PHP_MEMCACHE"|$SED 's/^shared,//'`
-  ;;
-shared)
-  PHP_MEMCACHE=yes
-  ;;
-no)
-  ext_output=no
-  ext_shared=no
-  ;;
-*)
-  ext_output=yes
-  ext_shared=no
-  ;;
-esac
-
-
-
-echo "$as_me:$LINENO: result: $ext_output" >&5
-echo "${ECHO_T}$ext_output" >&6
-
-
-
-
-
-php_enable_memcache_session=yes
-
-echo "$as_me:$LINENO: checking whether to enable memcache session handler support" >&5
-echo $ECHO_N "checking whether to enable memcache session handler support... $ECHO_C" >&6
-# Check whether --enable-memcache-session or --disable-memcache-session was given.
-if test "${enable_memcache_session+set}" = set; then
-  enableval="$enable_memcache_session"
-  PHP_MEMCACHE_SESSION=$enableval
-else
-
-  PHP_MEMCACHE_SESSION=yes
-
-
-fi;
-
-ext_output=$PHP_MEMCACHE_SESSION
-echo "$as_me:$LINENO: result: $ext_output" >&5
-echo "${ECHO_T}$ext_output" >&6
-
-
-
-
-if test -z "$PHP_ZLIB_DIR"; then
-
-php_with_zlib_dir=no
-
-echo "$as_me:$LINENO: checking for the location of ZLIB" >&5
-echo $ECHO_N "checking for the location of ZLIB... $ECHO_C" >&6
-
-# Check whether --with-zlib-dir or --without-zlib-dir was given.
-if test "${with_zlib_dir+set}" = set; then
-  withval="$with_zlib_dir"
-  PHP_ZLIB_DIR=$withval
-else
-
-  PHP_ZLIB_DIR=no
-
-
-fi;
-
-ext_output=$PHP_ZLIB_DIR
-echo "$as_me:$LINENO: result: $ext_output" >&5
-echo "${ECHO_T}$ext_output" >&6
-
-
-
-fi
-
-if test -z "$PHP_DEBUG"; then
-  # Check whether --enable-debug or --disable-debug was given.
-if test "${enable_debug+set}" = set; then
-  enableval="$enable_debug"
-
-    PHP_DEBUG=$enableval
-
-else
-
-    PHP_DEBUG=no
-
-fi;
-fi
-
-if test "$PHP_MEMCACHE" != "no"; then
-
-  if test "$PHP_ZLIB_DIR" != "no" && test "$PHP_ZLIB_DIR" != "yes"; then
-    if test -f "$PHP_ZLIB_DIR/include/zlib/zlib.h"; then
-      PHP_ZLIB_DIR="$PHP_ZLIB_DIR"
-      PHP_ZLIB_INCDIR="$PHP_ZLIB_DIR/include/zlib"
-    elif test -f "$PHP_ZLIB_DIR/include/zlib.h"; then
-      PHP_ZLIB_DIR="$PHP_ZLIB_DIR"
-      PHP_ZLIB_INCDIR="$PHP_ZLIB_DIR/include"
-    else
-      { { echo "$as_me:$LINENO: error: Can't find ZLIB headers under \"$PHP_ZLIB_DIR\"" >&5
-echo "$as_me: error: Can't find ZLIB headers under \"$PHP_ZLIB_DIR\"" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-  else
-    for i in /usr/local /usr; do
-      if test -f "$i/include/zlib/zlib.h"; then
-        PHP_ZLIB_DIR="$i"
-        PHP_ZLIB_INCDIR="$i/include/zlib"
-      elif test -f "$i/include/zlib.h"; then
-        PHP_ZLIB_DIR="$i"
-        PHP_ZLIB_INCDIR="$i/include"
-      fi
-    done
-  fi
-
-    echo "$as_me:$LINENO: checking for the location of zlib" >&5
-echo $ECHO_N "checking for the location of zlib... $ECHO_C" >&6
-  if test "$PHP_ZLIB_DIR" = "no"; then
-    { { echo "$as_me:$LINENO: error: memcache support requires ZLIB. Use --with-zlib-dir=<DIR> to specify prefix where ZLIB include and library are located" >&5
-echo "$as_me: error: memcache support requires ZLIB. Use --with-zlib-dir=<DIR> to specify prefix where ZLIB include and library are located" >&2;}
-   { (exit 1); exit 1; }; }
-  else
-    echo "$as_me:$LINENO: result: $PHP_ZLIB_DIR" >&5
-echo "${ECHO_T}$PHP_ZLIB_DIR" >&6
-    if test "z$PHP_LIBDIR" != "z"; then
-
-
-  if test "$ext_shared" = "yes"; then
-    MEMCACHE_SHARED_LIBADD="-lz $MEMCACHE_SHARED_LIBADD"
-    if test -n "$PHP_ZLIB_DIR/$PHP_LIBDIR"; then
-
-  if test "$PHP_ZLIB_DIR/$PHP_LIBDIR" != "/usr/$PHP_LIBDIR" && test "$PHP_ZLIB_DIR/$PHP_LIBDIR" != "/usr/lib"; then
-
-  if test -z "$PHP_ZLIB_DIR/$PHP_LIBDIR" || echo "$PHP_ZLIB_DIR/$PHP_LIBDIR" | grep '^/' >/dev/null ; then
-    ai_p=$PHP_ZLIB_DIR/$PHP_LIBDIR
-  else
-
-    ep_dir="`echo $PHP_ZLIB_DIR/$PHP_LIBDIR|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$PHP_ZLIB_DIR/$PHP_LIBDIR\"`"
-  fi
-
-
-      if test "$ext_shared" = "yes"; then
-        MEMCACHE_SHARED_LIBADD="-L$ai_p $MEMCACHE_SHARED_LIBADD"
-        test -n "$ld_runpath_switch" && MEMCACHE_SHARED_LIBADD="$ld_runpath_switch$ai_p $MEMCACHE_SHARED_LIBADD"
-      else
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$LIBPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "LIBPATH$unique=set"
-
-    test -n "$ld_runpath_switch" && LDFLAGS="$LDFLAGS $ld_runpath_switch$ai_p"
-    LDFLAGS="$LDFLAGS -L$ai_p"
-    PHP_RPATHS="$PHP_RPATHS $ai_p"
-
-  fi
-
-
-      fi
-
-  fi
-
-    fi
-  else
-
-
-  if test -n "$PHP_ZLIB_DIR/$PHP_LIBDIR"; then
-
-  if test "$PHP_ZLIB_DIR/$PHP_LIBDIR" != "/usr/$PHP_LIBDIR" && test "$PHP_ZLIB_DIR/$PHP_LIBDIR" != "/usr/lib"; then
-
-  if test -z "$PHP_ZLIB_DIR/$PHP_LIBDIR" || echo "$PHP_ZLIB_DIR/$PHP_LIBDIR" | grep '^/' >/dev/null ; then
-    ai_p=$PHP_ZLIB_DIR/$PHP_LIBDIR
-  else
-
-    ep_dir="`echo $PHP_ZLIB_DIR/$PHP_LIBDIR|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$PHP_ZLIB_DIR/$PHP_LIBDIR\"`"
-  fi
-
-
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$LIBPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "LIBPATH$unique=set"
-
-    test -n "$ld_runpath_switch" && LDFLAGS="$LDFLAGS $ld_runpath_switch$ai_p"
-    LDFLAGS="$LDFLAGS -L$ai_p"
-    PHP_RPATHS="$PHP_RPATHS $ai_p"
-
-  fi
-
-
-
-  fi
-
-  fi
-
-
-  case z in
-  c|c_r|pthread*) ;;
-  *)
-      LIBS="-lz $LIBS"
-   ;;
-  esac
-
-
-
-
-  fi
-
-
-    else
-
-
-  if test "$ext_shared" = "yes"; then
-    MEMCACHE_SHARED_LIBADD="-lz $MEMCACHE_SHARED_LIBADD"
-    if test -n "$PHP_ZLIB_DIR/lib"; then
-
-  if test "$PHP_ZLIB_DIR/lib" != "/usr/$PHP_LIBDIR" && test "$PHP_ZLIB_DIR/lib" != "/usr/lib"; then
-
-  if test -z "$PHP_ZLIB_DIR/lib" || echo "$PHP_ZLIB_DIR/lib" | grep '^/' >/dev/null ; then
-    ai_p=$PHP_ZLIB_DIR/lib
-  else
-
-    ep_dir="`echo $PHP_ZLIB_DIR/lib|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$PHP_ZLIB_DIR/lib\"`"
-  fi
-
-
-      if test "$ext_shared" = "yes"; then
-        MEMCACHE_SHARED_LIBADD="-L$ai_p $MEMCACHE_SHARED_LIBADD"
-        test -n "$ld_runpath_switch" && MEMCACHE_SHARED_LIBADD="$ld_runpath_switch$ai_p $MEMCACHE_SHARED_LIBADD"
-      else
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$LIBPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "LIBPATH$unique=set"
-
-    test -n "$ld_runpath_switch" && LDFLAGS="$LDFLAGS $ld_runpath_switch$ai_p"
-    LDFLAGS="$LDFLAGS -L$ai_p"
-    PHP_RPATHS="$PHP_RPATHS $ai_p"
-
-  fi
-
-
-      fi
-
-  fi
-
-    fi
-  else
-
-
-  if test -n "$PHP_ZLIB_DIR/lib"; then
-
-  if test "$PHP_ZLIB_DIR/lib" != "/usr/$PHP_LIBDIR" && test "$PHP_ZLIB_DIR/lib" != "/usr/lib"; then
-
-  if test -z "$PHP_ZLIB_DIR/lib" || echo "$PHP_ZLIB_DIR/lib" | grep '^/' >/dev/null ; then
-    ai_p=$PHP_ZLIB_DIR/lib
-  else
-
-    ep_dir="`echo $PHP_ZLIB_DIR/lib|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$PHP_ZLIB_DIR/lib\"`"
-  fi
-
-
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$LIBPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "LIBPATH$unique=set"
-
-    test -n "$ld_runpath_switch" && LDFLAGS="$LDFLAGS $ld_runpath_switch$ai_p"
-    LDFLAGS="$LDFLAGS -L$ai_p"
-    PHP_RPATHS="$PHP_RPATHS $ai_p"
-
-  fi
-
-
-
-  fi
-
-  fi
-
-
-  case z in
-  c|c_r|pthread*) ;;
-  *)
-      LIBS="-lz $LIBS"
-   ;;
-  esac
-
-
-
-
-  fi
-
-
-    fi
-
-  if test "$PHP_ZLIB_INCDIR" != "/usr/include"; then
-
-  if test -z "$PHP_ZLIB_INCDIR" || echo "$PHP_ZLIB_INCDIR" | grep '^/' >/dev/null ; then
-    ai_p=$PHP_ZLIB_INCDIR
-  else
-
-    ep_dir="`echo $PHP_ZLIB_INCDIR|$SED 's%/*[^/][^/]*/*$%%'`"
-
-    ep_realdir="`(cd \"$ep_dir\" && pwd)`"
-    ai_p="$ep_realdir/`basename \"$PHP_ZLIB_INCDIR\"`"
-  fi
-
-
-
-  unique=`echo $ai_p|$SED 's/[^a-zA-Z0-9]/_/g'`
-
-  cmd="echo $ac_n \"\$INCLUDEPATH$unique$ac_c\""
-  if test -n "$unique" && test "`eval $cmd`" = "" ; then
-    eval "INCLUDEPATH$unique=set"
-
-      if test ""; then
-        INCLUDES="-I$ai_p $INCLUDES"
-      else
-        INCLUDES="$INCLUDES -I$ai_p"
-      fi
-
-  fi
-
-  fi
-
-  fi
-
-  if test "$PHP_MEMCACHE_SESSION" != "no"; then
-	echo "$as_me:$LINENO: checking for session includes" >&5
-echo $ECHO_N "checking for session includes... $ECHO_C" >&6
-    session_inc_path=""
-
-    if test -f "$abs_srcdir/include/php/ext/session/php_session.h"; then
-      session_inc_path="$abs_srcdir/include/php"
-    elif test -f "$abs_srcdir/ext/session/php_session.h"; then
-      session_inc_path="$abs_srcdir"
-    elif test -f "$phpincludedir/ext/session/php_session.h"; then
-      session_inc_path="$phpincludedir"
-    else
-      for i in php php4 php5 php6; do
-        if test -f "$prefix/include/$i/ext/session/php_session.h"; then
-          session_inc_path="$prefix/include/$i"
-        fi
-      done
-    fi
-
-    if test "$session_inc_path" = ""; then
-      { { echo "$as_me:$LINENO: error: Cannot find php_session.h" >&5
-echo "$as_me: error: Cannot find php_session.h" >&2;}
-   { (exit 1); exit 1; }; }
-    else
-      echo "$as_me:$LINENO: result: $session_inc_path" >&5
-echo "${ECHO_T}$session_inc_path" >&6
-    fi
-  fi
-
-  echo "$as_me:$LINENO: checking for memcache session support" >&5
-echo $ECHO_N "checking for memcache session support... $ECHO_C" >&6
-  if test "$PHP_MEMCACHE_SESSION" != "no"; then
-    echo "$as_me:$LINENO: result: enabled" >&5
-echo "${ECHO_T}enabled" >&6
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_MEMCACHE_SESSION 1
-_ACEOF
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_MEMCACHE 1
-_ACEOF
-
-
-  ext_builddir=ext/memcache
-  ext_srcdir=$abs_srcdir/ext/memcache
-
-  ac_extra=`echo "-I$session_inc_path"|$SED s#@ext_srcdir@#$ext_srcdir#g|$SED s#@ext_builddir@#$ext_builddir#g`
-
-  if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" != "cli"; then
-    PHP_MEMCACHE_SHARED=no
-
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c memcache_session.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_GLOBAL_OBJS="$PHP_GLOBAL_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-    EXT_STATIC="$EXT_STATIC memcache"
-    if test "$ext_shared" != "nocli"; then
-      EXT_CLI_STATIC="$EXT_CLI_STATIC memcache"
-    fi
-  else
-    if test "$ext_shared" = "shared" || test "$ext_shared" = "yes"; then
-      PHP_MEMCACHE_SHARED=yes
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$shared_c_pre
-  b_cxx_pre=$shared_cxx_pre
-  b_c_meta=$shared_c_meta
-  b_cxx_meta=$shared_cxx_meta
-  b_c_post=$shared_c_post
-  b_cxx_post=$shared_cxx_post
-  b_lo=$shared_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c memcache_session.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      shared_objects_memcache="$shared_objects_memcache $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-      case $host_alias in
-        *netware*)
-
-  install_modules="install-modules"
-
-  case $host_alias in
-    *aix*)
-      suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/phpmemcache.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(PHPMEMCACHE_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/phpmemcache.so '$ext_builddir'/phpmemcache.so'
-      ;;
-    *netware*)
-      suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) -L$(top_builddir)/netware -lphp5lib $(MEMCACHE_SHARED_LIBADD)'
-      ;;
-    *)
-      suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(PHPMEMCACHE_SHARED_LIBADD)'
-      ;;
-  esac
-
-  if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/phpmemcache.$suffix"
-  else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/phpmemcache.$suffix"
-  fi
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_memcache"
-
-  cat >>Makefile.objects<<EOF
-\$(phplibdir)/phpmemcache.$suffix: $ext_builddir/phpmemcache.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/phpmemcache.$suffix \$(phplibdir)
-
-$ext_builddir/phpmemcache.$suffix: \$(shared_objects_memcache) \$(PHPMEMCACHE_SHARED_DEPENDENCIES)
-	$link_cmd
-
-EOF
-
-          ;;
-        *)
-
-  install_modules="install-modules"
-
-  case $host_alias in
-    *aix*)
-      suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/memcache.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(MEMCACHE_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/memcache.so '$ext_builddir'/memcache.so'
-      ;;
-    *netware*)
-      suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) -L$(top_builddir)/netware -lphp5lib $(CACHE_SHARED_LIBADD)'
-      ;;
-    *)
-      suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(MEMCACHE_SHARED_LIBADD)'
-      ;;
-  esac
-
-  if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/memcache.$suffix"
-  else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/memcache.$suffix"
-  fi
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_memcache"
-
-  cat >>Makefile.objects<<EOF
-\$(phplibdir)/memcache.$suffix: $ext_builddir/memcache.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/memcache.$suffix \$(phplibdir)
-
-$ext_builddir/memcache.$suffix: \$(shared_objects_memcache) \$(MEMCACHE_SHARED_DEPENDENCIES)
-	$link_cmd
-
-EOF
-
-          ;;
-      esac
-
-cat >>confdefs.h <<_ACEOF
-#define COMPILE_DL_MEMCACHE 1
-_ACEOF
-
-    fi
-  fi
-
-  if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" = "cli"; then
-    PHP_MEMCACHE_SHARED=no
-    case "$PHP_SAPI" in
-      cgi|embed)
-
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c memcache_session.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_GLOBAL_OBJS="$PHP_GLOBAL_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-        EXT_STATIC="$EXT_STATIC memcache"
-        ;;
-      *)
-
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c memcache_session.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_CLI_OBJS="$PHP_CLI_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-        ;;
-    esac
-    EXT_CLI_STATIC="$EXT_CLI_STATIC memcache"
-  fi
-
-
-    BUILD_DIR="$BUILD_DIR $ext_builddir"
-
-
-
-  if test "$ext_builddir" = "."; then
-    PHP_PECL_EXTENSION=memcache
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST PHP_PECL_EXTENSION"
-
-  fi
-
-
-
-  am_i_shared=$PHP_MEMCACHE_SHARED
-  is_it_shared=$PHP_SESSION_SHARED
-  is_it_enabled=$PHP_SESSION
-  if test "$am_i_shared" = "no" && test "$is_it_shared" = "yes" ; then
-    { { echo "$as_me:$LINENO: error:
-You've configured extension memcache to build statically, but it
-depends on extension session, which you've configured to build shared.
-You either need to build memcache shared or build session statically for the
-build to be successful.
-" >&5
-echo "$as_me: error:
-You've configured extension memcache to build statically, but it
-depends on extension session, which you've configured to build shared.
-You either need to build memcache shared or build session statically for the
-build to be successful.
-" >&2;}
-   { (exit 1); exit 1; }; }
-  fi
-  if test "x$is_it_enabled" = "xno" && test "x" != "xtrue"; then
-    { { echo "$as_me:$LINENO: error:
-You've configured extension memcache, which depends on extension session,
-but you've either not enabled session, or have disabled it.
-" >&5
-echo "$as_me: error:
-You've configured extension memcache, which depends on extension session,
-but you've either not enabled session, or have disabled it.
-" >&2;}
-   { (exit 1); exit 1; }; }
-  fi
-
-
-  else
-    echo "$as_me:$LINENO: result: disabled" >&5
-echo "${ECHO_T}disabled" >&6
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_MEMCACHE 1
-_ACEOF
-
-
-  ext_builddir=ext/memcache
-  ext_srcdir=$abs_srcdir/ext/memcache
-
-  ac_extra=
-
-  if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" != "cli"; then
-    PHP_MEMCACHE_SHARED=no
-
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_GLOBAL_OBJS="$PHP_GLOBAL_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-    EXT_STATIC="$EXT_STATIC memcache"
-    if test "$ext_shared" != "nocli"; then
-      EXT_CLI_STATIC="$EXT_CLI_STATIC memcache"
-    fi
-  else
-    if test "$ext_shared" = "shared" || test "$ext_shared" = "yes"; then
-      PHP_MEMCACHE_SHARED=yes
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$shared_c_pre
-  b_cxx_pre=$shared_cxx_pre
-  b_c_meta=$shared_c_meta
-  b_cxx_meta=$shared_cxx_meta
-  b_c_post=$shared_c_post
-  b_cxx_post=$shared_cxx_post
-  b_lo=$shared_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      shared_objects_memcache="$shared_objects_memcache $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-      case $host_alias in
-        *netware*)
-
-  install_modules="install-modules"
-
-  case $host_alias in
-    *aix*)
-      suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/phpmemcache.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(PHPMEMCACHE_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/phpmemcache.so '$ext_builddir'/phpmemcache.so'
-      ;;
-    *netware*)
-      suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) -L$(top_builddir)/netware -lphp5lib $(MEMCACHE_SHARED_LIBADD)'
-      ;;
-    *)
-      suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(PHPMEMCACHE_SHARED_LIBADD)'
-      ;;
-  esac
-
-  if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/phpmemcache.$suffix"
-  else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/phpmemcache.$suffix"
-  fi
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_memcache"
-
-  cat >>Makefile.objects<<EOF
-\$(phplibdir)/phpmemcache.$suffix: $ext_builddir/phpmemcache.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/phpmemcache.$suffix \$(phplibdir)
-
-$ext_builddir/phpmemcache.$suffix: \$(shared_objects_memcache) \$(PHPMEMCACHE_SHARED_DEPENDENCIES)
-	$link_cmd
-
-EOF
-
-          ;;
-        *)
-
-  install_modules="install-modules"
-
-  case $host_alias in
-    *aix*)
-      suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/memcache.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(MEMCACHE_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/memcache.so '$ext_builddir'/memcache.so'
-      ;;
-    *netware*)
-      suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) -L$(top_builddir)/netware -lphp5lib $(CACHE_SHARED_LIBADD)'
-      ;;
-    *)
-      suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_memcache) $(MEMCACHE_SHARED_LIBADD)'
-      ;;
-  esac
-
-  if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/memcache.$suffix"
-  else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/memcache.$suffix"
-  fi
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_memcache"
-
-  cat >>Makefile.objects<<EOF
-\$(phplibdir)/memcache.$suffix: $ext_builddir/memcache.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/memcache.$suffix \$(phplibdir)
-
-$ext_builddir/memcache.$suffix: \$(shared_objects_memcache) \$(MEMCACHE_SHARED_DEPENDENCIES)
-	$link_cmd
-
-EOF
-
-          ;;
-      esac
-
-cat >>confdefs.h <<_ACEOF
-#define COMPILE_DL_MEMCACHE 1
-_ACEOF
-
-    fi
-  fi
-
-  if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" = "cli"; then
-    PHP_MEMCACHE_SHARED=no
-    case "$PHP_SAPI" in
-      cgi|embed)
-
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_GLOBAL_OBJS="$PHP_GLOBAL_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-        EXT_STATIC="$EXT_STATIC memcache"
-        ;;
-      *)
-
-
-  case ext/memcache in
-  "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
-  /*) ac_srcdir=`echo "ext/memcache"|cut -c 2-`"/"; ac_bdir=$ac_srcdir; ac_inc="-I$ac_bdir -I$abs_srcdir/$ac_bdir" ;;
-  *) ac_srcdir="$abs_srcdir/ext/memcache/"; ac_bdir="ext/memcache/"; ac_inc="-I$ac_bdir -I$ac_srcdir" ;;
-  esac
-
-
-
-  b_c_pre=$php_c_pre
-  b_cxx_pre=$php_cxx_pre
-  b_c_meta=$php_c_meta
-  b_cxx_meta=$php_cxx_meta
-  b_c_post=$php_c_post
-  b_cxx_post=$php_cxx_post
-  b_lo=$php_lo
-
-
-  old_IFS=$IFS
-  for ac_src in memcache.c memcache_queue.c memcache_standard_hash.c memcache_consistent_hash.c; do
-
-      IFS=.
-      set $ac_src
-      ac_obj=$1
-      IFS=$old_IFS
-
-      PHP_CLI_OBJS="$PHP_CLI_OBJS $ac_bdir$ac_obj.lo"
-
-      case $ac_src in
-        *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.s) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.S) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
-        *.cpp|*.cc|*.cxx) ac_comp="$b_cxx_pre $ac_extra $ac_inc $b_cxx_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_cxx_post" ;;
-      esac
-
-    cat >>Makefile.objects<<EOF
-$ac_bdir$ac_obj.lo: $ac_srcdir$ac_src
-	$ac_comp
-EOF
-  done
-
-
-        ;;
-    esac
-    EXT_CLI_STATIC="$EXT_CLI_STATIC memcache"
-  fi
-
-
-    BUILD_DIR="$BUILD_DIR $ext_builddir"
-
-
-
-  if test "$ext_builddir" = "."; then
-    PHP_PECL_EXTENSION=memcache
-
-  PHP_VAR_SUBST="$PHP_VAR_SUBST PHP_PECL_EXTENSION"
-
-  fi
-
-  fi
-
-
-  if test "$PHP_DEBUG" = "yes"; then
-    CFLAGS="$CFLAGS -Wall"
-  fi
-
-fi
-
-
-
 php_enable_mysqlnd=no
 
 echo "$as_me:$LINENO: checking whether to enable mysqlnd" >&5
@@ -120365,7 +119305,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 120368 "configure"
+#line 119308 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -122917,7 +121857,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 122920 "configure"' > conftest.$ac_ext
+  echo '#line 121860 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -124375,7 +123315,7 @@ else
       LDFLAGS="$LDFLAGS -Wl,-exported_symbols_list,conftest.sym"
 
 cat > conftest.$ac_ext <<EOF
-#line 124378 "configure"
+#line 123318 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -124534,11 +123474,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:124537: $lt_compile\"" >&5)
+   (eval echo "\"configure:123477: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "configure:124541: \$? = $ac_status" >&5
+   echo "configure:123481: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -124832,11 +123772,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:124835: $lt_compile\"" >&5)
+   (eval echo "\"configure:123775: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "configure:124839: \$? = $ac_status" >&5
+   echo "configure:123779: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -124936,11 +123876,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:124939: $lt_compile\"" >&5)
+   (eval echo "\"configure:123879: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "configure:124943: \$? = $ac_status" >&5
+   echo "configure:123883: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -125400,7 +124340,7 @@ _LT_EOF
        # Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 125403 "configure"
+#line 124343 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -125442,7 +124382,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 	 # Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 125445 "configure"
+#line 124385 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -127285,7 +126225,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 127288 "configure"
+#line 126228 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -127385,7 +126325,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 127388 "configure"
+#line 126328 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -128457,7 +127397,7 @@ case $host_os in
       # Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 128460 "configure"
+#line 127400 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -128500,7 +127440,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 	# Determine the default libpath from the value encoded in an empty executable.
 
 cat > conftest.$ac_ext <<EOF
-#line 128503 "configure"
+#line 127443 "configure"
 #include "confdefs.h"
 int main() {
 ; return 0; }
@@ -129752,11 +128692,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:129755: $lt_compile\"" >&5)
+   (eval echo "\"configure:128695: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "configure:129759: \$? = $ac_status" >&5
+   echo "configure:128699: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -129856,11 +128796,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"configure:129859: $lt_compile\"" >&5)
+   (eval echo "\"configure:128799: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "configure:129863: \$? = $ac_status" >&5
+   echo "configure:128803: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized

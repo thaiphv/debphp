@@ -25,7 +25,6 @@ remove_php_extension mcrypt
 remove_php_extension tidy
 remove_php_extension xmlrpc
 extract_php_extension oauth-1.2.3
-extract_php_extension memcache-2.2.7
 extract_php_extension proctitle-0.1.2
 
 pushd dist

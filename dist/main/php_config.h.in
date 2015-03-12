@@ -123,9 +123,6 @@
 /* Whether to build mbstring as dynamic module */
 #undef COMPILE_DL_MBSTRING
 
-/* Whether to build memcache as dynamic module */
-#undef COMPILE_DL_MEMCACHE
-
 /* Whether to build mssql as dynamic module */
 #undef COMPILE_DL_MSSQL
 
@@ -1039,12 +1036,6 @@
 
 /* whether to have multibyte string support */
 #undef HAVE_MBSTRING
-
-/* Whether you want memcache support */
-#undef HAVE_MEMCACHE
-
-/* Whether memcache session handler is enabled */
-#undef HAVE_MEMCACHE_SESSION
 
 /* Define to 1 if you have the `memcpy' function. */
 #undef HAVE_MEMCPY
