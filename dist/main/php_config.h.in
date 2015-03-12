@@ -123,15 +123,6 @@
 /* Whether to build mssql as dynamic module */
 #undef COMPILE_DL_MSSQL
 
-/* Whether to build mysql as dynamic module */
-#undef COMPILE_DL_MYSQL
-
-/* Whether to build mysqli as dynamic module */
-#undef COMPILE_DL_MYSQLI
-
-/* Whether to build mysqlnd as dynamic module */
-#undef COMPILE_DL_MYSQLND
-
 /* Whether to build oauth as dynamic module */
 #undef COMPILE_DL_OAUTH
 
@@ -605,9 +596,6 @@
 /* OpenSSL 0.9.7 or later */
 #undef HAVE_DSA_DEFAULT_METHOD
 
-/* embedded MySQL support enabled */
-#undef HAVE_EMBEDDED_MYSQLI
-
 /* */
 #undef HAVE_EMPRESS
 
@@ -1077,9 +1065,6 @@
 
 /* Whether you have MySQL */
 #undef HAVE_MYSQL
-
-/* */
-#undef HAVE_MYSQLILIB
 
 /* Define to 1 if you have the `mysql_commit' function. */
 #undef HAVE_MYSQL_COMMIT
@@ -1555,9 +1540,6 @@
 /* Define to 1 if you have the `std_syslog' function. */
 #undef HAVE_STD_SYSLOG
 
-/* */
-#undef HAVE_STMT_NEXT_RESULT
-
 /* Define to 1 if you have the `strcasecmp' function. */
 #undef HAVE_STRCASECMP
 
@@ -1928,18 +1910,6 @@
 /* Whether strtok_r is declared */
 #undef MISSING_STRTOK_R_DECL
 
-/* Whether mysqlnd is enabled */
-#undef MYSQLI_USE_MYSQLND
-
-/* Enable compressed protocol support */
-#undef MYSQLND_COMPRESSION_WANTED
-
-/* Enable SSL support */
-#undef MYSQLND_SSL_SUPPORTED
-
-/* Whether mysqlnd is enabled */
-#undef MYSQL_USE_MYSQLND
-
 /* */
 #undef NDBM_INCLUDE_FILE
 
@@ -2020,9 +1990,6 @@
 
 /* */
 #undef PHP_MHASH_BC
-
-/* */
-#undef PHP_MYSQL_UNIX_SOCK_ADDR
 
 /* */
 #undef PHP_OCI8_DEF_DIR
