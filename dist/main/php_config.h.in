@@ -108,9 +108,6 @@
 /* Whether to build interbase as dynamic module */
 #undef COMPILE_DL_INTERBASE
 
-/* Whether to build intl as dynamic module */
-#undef COMPILE_DL_INTL
-
 /* Whether to build json as dynamic module */
 #undef COMPILE_DL_JSON
 

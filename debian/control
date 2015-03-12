@@ -10,7 +10,6 @@ Build-Depends: debhelper (>= 8),
                libxml2-dev,
                libbz2-dev,
                libcurl4-openssl-dev,
-               libicu-dev,
                libreadline-dev,
                libpcre3-dev,
                g++,
@@ -23,7 +22,7 @@ Vcs-Browser: https://git.freelancer.com/pkg/php-f8r-app/
 
 Package: php-f8r-app
 Architecture: amd64
-Depends: lsb-base (>= 3.2-14), mime-support, libmagic1, ucf, tzdata, sed, libicu48, libmysqlclient18
+Depends: lsb-base (>= 3.2-14), mime-support, libmagic1, ucf, tzdata, sed, libmysqlclient18
 Provides: php5-common, phpapi-20090626, php5-cli, php5-fpm
 Conflicts: php5-common, php5-cli, php5-fpm
 Description: Freelancer PHP for GAF app servers

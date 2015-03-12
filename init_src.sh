@@ -21,6 +21,7 @@ wget -O- https://github.com/php/php-src/archive/php-5.3.29.tar.gz | tar --strip-
 
 remove_php_extension curl
 remove_php_extension gd
+remove_php_extension intl
 remove_php_extension mcrypt
 remove_php_extension tidy
 remove_php_extension xmlrpc
