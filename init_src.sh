@@ -23,9 +23,6 @@ remove_php_extension curl
 remove_php_extension gd
 remove_php_extension intl
 remove_php_extension mcrypt
-remove_php_extension mysql
-remove_php_extension mysqli
-remove_php_extension mysqlnd
 remove_php_extension tidy
 remove_php_extension xmlrpc
 extract_php_extension proctitle-0.1.2
