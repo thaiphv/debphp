@@ -2,19 +2,7 @@ Source: php-f8r-app
 Maintainer: Jedi <jedi@freelancer.com>
 Section: php
 Priority: optional
-Build-Depends: debhelper (>= 8),
-               build-essential,
-               autoconf2.59,
-               libstdc++6-4.6-dev,
-               g++-4.6,
-               libxml2-dev,
-               libbz2-dev,
-               libcurl4-openssl-dev,
-               libreadline-dev,
-               libpcre3-dev,
-               g++,
-               libssl-dev,
-               re2c
+Build-Depends: debhelper (>= 8), build-essential, autoconf2.59, libstdc++6-4.6-dev, g++-4.6, libxml2-dev, libbz2-dev, libcurl4-openssl-dev, libreadline-dev, libpcre3-dev, g++,  libssl-dev, re2c
 Standards-Version: 5.3.29
 Homepage: https://git.freelancer.com/pkg/php-f8r-app/
 Vcs-Git: git://git.freelancer.com/pkg/php-f8r-app.git
