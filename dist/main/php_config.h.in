@@ -123,9 +123,6 @@
 /* Whether to build mssql as dynamic module */
 #undef COMPILE_DL_MSSQL
 
-/* Whether to build oauth as dynamic module */
-#undef COMPILE_DL_OAUTH
-
 /* Whether to build oci8 as dynamic module */
 #undef COMPILE_DL_OCI8
 
@@ -1918,9 +1915,6 @@
 
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
 #undef NO_MINUS_C_MINUS_O
-
-/* Whether cURL is present and should be used */
-#undef OAUTH_USE_CURL
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
