@@ -2,6 +2,8 @@
 
 export LDFLAGS=-lstdc++
 
+PROG_SENDMAIL=/usr/sbin/sendmail
+
 %:
 	dh $@
 
@@ -11,7 +13,7 @@ override_dh_auto_test:
 override_dh_auto_configure:
 	rm configure
 	PHP_AUTOCONF=autoconf2.59 ./buildconf --force
-	$(CURDIR)/configure \
+	PROG_SENDMAIL="$(PROG_SENDMAIL)" $(CURDIR)/configure \
 	--prefix=/usr \
 	--bindir=/usr/bin \
 	--sbindir=/usr/sbin \
