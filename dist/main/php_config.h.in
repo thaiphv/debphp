@@ -171,9 +171,6 @@
 /* Whether to build posix as dynamic module */
 #undef COMPILE_DL_POSIX
 
-/* Whether to build proctitle as dynamic module */
-#undef COMPILE_DL_PROCTITLE
-
 /* Whether to build pspell as dynamic module */
 #undef COMPILE_DL_PSPELL
 
@@ -2029,9 +2026,6 @@
 
 /* Whether the system supports standard DES salt */
 #undef PHP_STD_DES_CRYPT
-
-/* Define if your system has setproctitle */
-#undef PHP_SYSTEM_PROVIDES_SETPROCTITLE
 
 /* uname -a output */
 #undef PHP_UNAME
