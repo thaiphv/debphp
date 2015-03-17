@@ -15,28 +15,54 @@ override_dh_auto_configure:
 	rm configure
 	PHP_AUTOCONF=autoconf2.59 ./buildconf --force
 	EXTENSION_DIR="$(EXTENSION_DIR)" PROG_SENDMAIL="$(PROG_SENDMAIL)" $(CURDIR)/configure \
-	--prefix=/usr \
-	--bindir=/usr/bin \
-	--sbindir=/usr/sbin \
-	--mandir=/usr/share/man \
-	--enable-static \
-	--with-config-file-path=/etc/php5/cli \
-	--with-config-file-scan-dir=/etc/php5/conf.d \
-	--with-layout=GNU \
-	--enable-cli --enable-cgi --enable-fpm \
-	--with-fpm-user=www-data --with-fpm-group=www-data \
-	--enable-magic-quotes --enable-ipv6 --without-sqlite3 \
-	--without-sqlite --disable-sqlite --with-zlib \
-	--enable-bcmath --with-bz2 --enable-calendar \
-	--disable-dba --enable-exif \
-	--enable-ftp --with-t1lib --with-jpeg-dir=/usr \
-	--with-gettext --with-mhash \
-	--enable-mbstring --with-libmbfl --with-onig \
-	--with-openssl --enable-phar --enable-pcntl \
-	--without-pdo-sqlite  --with-readline \
-	--enable-shmop --enable-soap --enable-sockets --enable-sysvmsg \
-	--enable-sysvsem --enable-sysvshm --enable-wddx \
-	--enable-zip --without-pear --with-zend-vm --enable-apc
+		--prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--mandir=/usr/share/man \
+		--enable-cli \
+		--enable-fpm \
+		--enable-cgi \
+		--enable-magic-quotes \
+		--enable-ipv6 \
+		--enable-apc \
+		--enable-bcmath \
+		--enable-calendar \
+		--disable-dba \
+		--enable-exif \
+		--enable-ftp \
+		--enable-mbstring \
+		--enable-pcntl \
+		--enable-phar \
+		--enable-shmop \
+		--enable-soap \
+		--enable-sockets \
+		--disable-sqlite \
+		--enable-sysvmsg \
+		--enable-sysvsem \
+		--enable-sysvshm \
+		--enable-wddx \
+		--enable-zip \
+		--enable-static \
+		--with-fpm-user=www-data \
+		--with-fpm-group=www-data \
+		--with-layout=GNU \
+		--with-config-file-path=/etc/php5/cli \
+		--with-config-file-scan-dir=/etc/php5/conf.d \
+		--with-openssl \
+		--without-sqlite3 \
+		--with-zlib \
+		--with-bz2 \
+		--without-sqlite \
+		--with-gettext \
+		--with-mhash \
+		--with-libmbfl \
+		--with-onig \
+		--without-pdo-sqlite \
+		--with-readline \
+		--without-pear \
+		--with-zend-vm \
+		--with-t1lib \
+		--with-jpeg-dir=/usr
 
 override_dh_auto_build:
 	LDFLAGS='-lstdc++' make -j 2
