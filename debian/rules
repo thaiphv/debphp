@@ -5,6 +5,10 @@ export LDFLAGS=-lstdc++
 EXTENSION_DIR=/usr/lib/php5/20090626
 PROG_SENDMAIL=/usr/sbin/sendmail
 
+# enable dpkg build flags
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+
 %:
 	dh $@
 
