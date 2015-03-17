@@ -2,6 +2,7 @@
 
 export LDFLAGS=-lstdc++
 
+EXTENSION_DIR=/usr/lib/php5/20090626
 PROG_SENDMAIL=/usr/sbin/sendmail
 
 %:
@@ -13,7 +14,7 @@ override_dh_auto_test:
 override_dh_auto_configure:
 	rm configure
 	PHP_AUTOCONF=autoconf2.59 ./buildconf --force
-	PROG_SENDMAIL="$(PROG_SENDMAIL)" $(CURDIR)/configure \
+	EXTENSION_DIR="$(EXTENSION_DIR)" PROG_SENDMAIL="$(PROG_SENDMAIL)" $(CURDIR)/configure \
 	--prefix=/usr \
 	--bindir=/usr/bin \
 	--sbindir=/usr/sbin \
@@ -21,6 +22,7 @@ override_dh_auto_configure:
 	--enable-static \
 	--with-config-file-path=/etc/php5/cli \
 	--with-config-file-scan-dir=/etc/php5/conf.d \
+	--with-layout=GNU \
 	--enable-cli --enable-cgi --enable-fpm \
 	--with-fpm-user=www-data --with-fpm-group=www-data \
 	--enable-magic-quotes --enable-ipv6 --without-sqlite3 \
