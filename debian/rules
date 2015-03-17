@@ -42,7 +42,7 @@ override_dh_auto_configure:
 		--enable-sysvshm \
 		--enable-wddx \
 		--enable-zip \
-		--enable-static \
+		--disable-static \
 		--with-fpm-user=www-data \
 		--with-fpm-group=www-data \
 		--with-layout=GNU \
