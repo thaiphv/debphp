@@ -1,3 +1,5 @@
 /etc/php5/cli
 /etc/php5/conf.d
 /etc/php5/fpm
+/usr/bin
+/usr/sbin
