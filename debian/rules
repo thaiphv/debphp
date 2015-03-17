@@ -67,11 +67,22 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	LDFLAGS='-lstdc++' make -j 2
 
+PCNTL_FUNCTIONS := $(shell < $(CURDIR)/ext/pcntl/php_pcntl.h sed -ne "/^PHP_FUNCTION/ s/PHP_FUNCTION(\(.*\));/\1/;t end;d;:end p" | tr '\n' ',')
+
 override_dh_auto_install:
 	$(MAKE) install INSTALL_ROOT=$(CURDIR)/debian/php-f8r-app
-	# Copy the configuration initial files
-	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php.ini
-	cp -v $(CURDIR)/php.ini-production $(CURDIR)/debian/php-f8r-app/etc/php5/cli/php.ini
+
+	# sanitize php.ini file
+	cat $(CURDIR)/php.ini-production | tr "\t" " " | \
+	sed -e '/memory_limt =/ s/128M/-1/g;' \
+	    -e '/session.gc_probability =/ s/1/0/g;' \
+		-e '/short_open_tag =/ s/Off/On/g;' \
+	  > $(CURDIR)/debian/php-f8r-app/etc/php5/cli/php.ini
+	cat $(CURDIR)/php.ini-production | tr "\t" " " | \
+	sed -e '/disable_functions =/ s/$$/ $(PCNTL_FUNCTIONS)/g;' \
+	    -e '/short_open_tag =/ s/Off/On/g;' \
+	    -e '/session.gc_probability =/ s/1/0/g;' \
+	  > $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php.ini
 	cp -v $(CURDIR)/debian/php-f8r-app/usr/etc/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
 
 override_dh_installinit:
