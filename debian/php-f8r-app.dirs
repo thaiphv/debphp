@@ -3,3 +3,6 @@
 /etc/php5/fpm
 /usr/bin
 /usr/sbin
+/var/lib/php5
+/var/lib/php5/modules
+/var/lib/php5/sessions

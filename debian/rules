@@ -76,6 +76,8 @@ PCNTL_FUNCTIONS := $(shell < $(CURDIR)/ext/pcntl/php_pcntl.h sed -ne "/^PHP_FUNC
 override_dh_auto_install:
 	$(MAKE) install INSTALL_ROOT=$(CURDIR)/debian/php-f8r-app
 
+	chmod 01733 $(CURDIR)/debian/php-f8r-app/var/lib/php5/sessions/
+
 	# sanitize php.ini file
 	cat $(CURDIR)/php.ini-production | tr "\t" " " | \
 	sed -e '/memory_limt =/ s/128M/-1/g;' \
