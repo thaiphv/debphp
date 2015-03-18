@@ -31,7 +31,7 @@ override_dh_auto_configure:
 		--enable-apc \
 		--enable-bcmath \
 		--enable-calendar \
-		--disable-dba \
+		--enable-dba \
 		--enable-exif \
 		--enable-ftp \
 		--enable-mbstring \
