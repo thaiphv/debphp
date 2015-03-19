@@ -23,6 +23,7 @@ override_dh_auto_configure:
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
 		--sysconfdir=/etc \
+		--localstatedir=/var \
 		--mandir=/usr/share/man \
 		--enable-cli \
 		--enable-fpm \
