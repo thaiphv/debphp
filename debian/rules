@@ -91,7 +91,7 @@ override_dh_auto_install:
 	    -e '/short_open_tag =/ s/Off/On/g;' \
 	    -e '/session.gc_probability =/ s/1/0/g;' \
 	  > $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php.ini
-	cp -v $(CURDIR)/debian/php-f8r-app/usr/etc/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
+	mv $(CURDIR)/debian/php-f8r-app/etc/php-fpm.conf.default $(CURDIR)/debian/php-f8r-app/etc/php5/fpm/php-fpm.conf
 
 	# Remove pear (see T22041)
 	rm -rf $(CURDIR)/debian/php-f8r-app/usr/bin/pear \
