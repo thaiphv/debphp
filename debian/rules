@@ -22,6 +22,7 @@ override_dh_auto_configure:
 		--prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--sysconfdir=/etc \
 		--mandir=/usr/share/man \
 		--enable-cli \
 		--enable-fpm \
