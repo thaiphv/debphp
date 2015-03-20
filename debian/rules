@@ -105,6 +105,14 @@ override_dh_auto_install:
 		   $(CURDIR)/debian/php-f8r-app/.lock \
 		   $(CURDIR)/debian/php-f8r-app/.registry/ \
 
+	# Remove dev
+	rm -rf $(CURDIR)/debian/php-f8r-app/usr/bin/phpize \
+		   $(CURDIR)/debian/php-f8r-app/usr/bin/php-config \
+		   $(CURDIR)/debian/php-f8r-app/usr/include/php/ \
+		   $(CURDIR)/debian/php-f8r-app/usr/lib/php/build/ \
+		   $(CURDIR)/debian/php-f8r-app/usr/share/man/man1/phpize.1.gz \
+		   $(CURDIR)/debian/php-f8r-app/usr/share/man/man1/php-config5.1.gz
+
 override_dh_installinit:
 	dh_installinit --name=php5-fpm
 
