@@ -4635,7 +4635,7 @@ yyreduce:
 
   case 292:
 
-    { /*zend_do_shell_exec(&(yyval), &(yyvsp[(2) - (3)]) TSRMLS_CC);*/ }
+    { zend_do_shell_exec(&(yyval), &(yyvsp[(2) - (3)]) TSRMLS_CC); }
     break;
 
   case 293:
