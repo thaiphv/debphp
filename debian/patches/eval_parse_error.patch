@@ -1,0 +1,141 @@
+Index: php/Zend/zend.c
+===================================================================
+--- php.orig/Zend/zend.c
++++ php/Zend/zend.c
+@@ -1198,7 +1198,13 @@ ZEND_API void zend_error(int type, const
+ 	va_end(args);
+ 
+ 	if (type == E_PARSE) {
+-		EG(exit_status) = 255;
++		/* eval() errors do not affect exit_status */
++		if (!(EG(current_execute_data) &&
++			EG(current_execute_data)->opline &&
++			EG(current_execute_data)->opline->opcode == ZEND_INCLUDE_OR_EVAL &&
++			EG(current_execute_data)->opline->extended_value == ZEND_EVAL)) {
++			EG(exit_status) = 255;
++		}
+ 		zend_init_compiler_data_structures(TSRMLS_C);
+ 	}
+ }
+Index: php/main/main.c
+===================================================================
+--- php.orig/main/main.c
++++ php/main/main.c
+@@ -1105,11 +1105,20 @@ static void php_error_cb(int type, const
+ 		case E_PARSE:
+ 		case E_COMPILE_ERROR:
+ 		case E_USER_ERROR:
+-			EG(exit_status) = 255;
++		{ /* new block to allow variable definition */
++			/* eval() errors do not affect exit_status or response code */
++			zend_bool during_eval = (type == E_PARSE) && (EG(current_execute_data) &&
++						EG(current_execute_data)->opline &&
++						EG(current_execute_data)->opline->opcode == ZEND_INCLUDE_OR_EVAL &&
++						EG(current_execute_data)->opline->extended_value == ZEND_EVAL);
++			if (!during_eval) {
++				EG(exit_status) = 255;
++			}
+ 			if (module_initialized) {
+ 				if (!PG(display_errors) &&
+ 				    !SG(headers_sent) &&
+-					SG(sapi_headers).http_response_code == 200
++					SG(sapi_headers).http_response_code == 200 &&
++				    !during_eval
+ 				) {
+ 					sapi_header_line ctr = {0};
+ 
+@@ -1128,6 +1137,7 @@ static void php_error_cb(int type, const
+ 				}
+ 			}
+ 			break;
++		}
+ 	}
+ 
+ 	/* Log if necessary */
+Index: php/sapi/cli/tests/bug43177.phpt
+===================================================================
+--- /dev/null
++++ php/sapi/cli/tests/bug43177.phpt
+@@ -0,0 +1,82 @@
++--TEST--
++Bug #61977 Test exit code for various errors
++--SKIPIF--
++<?php
++include "skipif.inc";
++?>
++--FILE--
++<?php
++include "php_cli_server.inc";
++php_cli_server_start(<<<'SCRIPT'
++    ini_set('display_errors', 0);
++    switch($_SERVER["REQUEST_URI"]) {
++            case "/parse":
++                    eval("this is a parse error");
++                    echo "OK\n";
++                    break;
++            case "/fatal":
++                    eval("foo();");
++                    echo "OK\n";
++                    break;
++            case "/compile":
++                    eval("class foo { final private final function bar() {} }");
++                    echo "OK\n";
++                    break;
++            case "/fatal2":
++                    foo();
++                    echo "OK\n";
++                    break;
++            default:
++                    return false;
++    }
++SCRIPT
++);
++
++list($host, $port) = explode(':', PHP_CLI_SERVER_ADDRESS);
++$port = intval($port)?:80;
++
++foreach(array("parse", "fatal", "fatal2", "compile") as $url) {
++    $fp = fsockopen($host, $port, $errno, $errstr, 0.5);
++    if (!$fp) {
++        die("connect failed");
++    }
++
++    if(fwrite($fp, <<<HEADER
++GET /$url HTTP/1.1
++Host: {$host}
++
++
++HEADER
++)) {
++        while (!feof($fp)) {
++                echo fgets($fp);
++        }
++    }
++}
++
++?>
++--EXPECTF--
++HTTP/1.1 200 OK
++Host: localhost
++Connection: close
++X-Powered-By: %s
++Content-type: text/html
++
++OK
++HTTP/1.0 500 Internal Server Error
++Host: localhost
++Connection: close
++X-Powered-By: %s
++Content-type: text/html
++
++HTTP/1.0 500 Internal Server Error
++Host: localhost
++Connection: close
++X-Powered-By: %s
++Content-type: text/html
++
++HTTP/1.0 500 Internal Server Error
++Host: localhost
++Connection: close
++X-Powered-By: %s
++Content-type: text/html
