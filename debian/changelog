@@ -1,3 +1,9 @@
+php5 (5.3.29-3) stable; urgency=medium
+
+  * Add last remaining debian patches.
+
+ -- Joshua Spence <josh@joshuaspence.com>  Thu, 25 Jun 2015 15:44:24 +1000
+
 php5 (5.3.29-2) stable; urgency=high
 
   * Merge in debian package. See T17098.
