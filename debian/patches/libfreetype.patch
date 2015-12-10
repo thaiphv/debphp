@@ -1,0 +1,23 @@
+Index: php/ext/gd/config.m4
+===================================================================
+--- php.orig/ext/gd/config.m4
++++ php/ext/gd/config.m4
+@@ -162,11 +162,13 @@ AC_DEFUN([PHP_GD_FREETYPE2],[
+   if test "$PHP_FREETYPE_DIR" != "no"; then
+
+     for i in $PHP_FREETYPE_DIR /usr/local /usr; do
+-      if test -f "$i/include/freetype2/freetype/freetype.h"; then
+-        FREETYPE2_DIR=$i
+-        FREETYPE2_INC_DIR=$i/include/freetype2
+-        break
+-      fi
++      for j in "$i/include/freetype2/freetype" "$i/include/freetype2"; do
++        if test -f "$j/freetype.h"; then
++          FREETYPE2_DIR=$i
++          FREETYPE2_INC_DIR=$i/include/freetype2
++          break
++        fi
++      done
+     done
+
+     if test -z "$FREETYPE2_DIR"; then

@@ -1,0 +1,22 @@
+Index: php/ext/gmp/config.m4
+===================================================================
+--- php.orig/ext/gmp/config.m4
++++ php/ext/gmp/config.m4
+@@ -8,13 +8,15 @@ PHP_ARG_WITH(gmp, for GNU MP support,
+ if test "$PHP_GMP" != "no"; then
+
+   for i in $PHP_GMP /usr/local /usr; do
+-    test -f $i/include/gmp.h && GMP_DIR=$i && break
++    for j in "$i/include" "$i/include/x86_64-linux-gnu"; do
++      test -f $j/gmp.h && GMP_DIR=$i && break
++    done
+   done
+
+   if test -z "$GMP_DIR"; then
+     AC_MSG_ERROR(Unable to locate gmp.h)
+   fi
+-
++
+   PHP_CHECK_LIBRARY(gmp, __gmp_randinit_lc_2exp_size,
+   [],[
+     PHP_CHECK_LIBRARY(gmp, gmp_randinit_lc_2exp_size,
